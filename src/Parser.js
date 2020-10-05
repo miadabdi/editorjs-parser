@@ -1,12 +1,5 @@
 const defaultParsers = require("./parsers");
-
-const defaultConfig = {
-    image: {
-        withCaption: "figure", // figure or img (figcaption will be used for caption)
-        figureClass: "fig-img",
-        imgClass: "img",
-    },
-};
+const defaultConfig = require("./config");
 
 class edjsParser {
     constructor(config = {}, customs = {}) {
