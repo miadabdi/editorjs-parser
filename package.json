@@ -6,9 +6,14 @@
     "directories": {
         "test": "test"
     },
+    "keywords": [
+        "editorjs",
+        "parser",
+        "html"
+    ],
     "scripts": {
         "test": "node test/test.js"
     },
-    "author": "Michael Jones",
+    "author": "Michael Jones <2001michaeljones@gmail.com>",
     "license": "MIT"
 }
