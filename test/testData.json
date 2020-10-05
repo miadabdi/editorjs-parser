@@ -1,0 +1,173 @@
+{
+    "time": 1601898039654,
+    "blocks": [{
+            "type": "paragraph",
+            "data": {
+                "text": "Hello There, it is a test post related to <a href=\"https://google.com\">Google</a> which is the <b>biggest</b> search engine!"
+            }
+        },
+        {
+            "type": "header",
+            "data": {
+                "text": "Google's attributes",
+                "level": 2
+            }
+        },
+        {
+            "type": "list",
+            "data": {
+                "style": "ordered",
+                "items": [
+                    "Search Engine",
+                    "Google fonts",
+                    "Google images",
+                    "Google maps"
+                ]
+            }
+        },
+        {
+            "type": "quote",
+            "data": {
+                "text": "If your access to health care involves your leaving work and driving somewhere and parking and waiting for a long time, that's not going to promote healthiness.",
+                "caption": "Larry Page",
+                "alignment": "left"
+            }
+        },
+        {
+            "type": "table",
+            "data": {
+                "content": [
+                    ["", "Me", "Me"],
+                    ["You", "Ugly", "Big"]
+                ]
+            }
+        },
+        {
+            "type": "code",
+            "data": {
+                "code": "const path = require(\"path\");\nconst cookieParser = require(\"cookie-parser\");\nconst rateLimiter = require(\"express-rate-limit\");\nconst helmet = require(\"helmet\");\nconst mongoSanitize = require(\"express-mongo-sanitize\");\nconst xss = require(\"xss-clean\");\nconst hpp = require(\"hpp\");\nconst express = require(\"express\");\nconst morgan = require(\"morgan\");\nconst AppError = require(\"./utilities/AppError\");\nconst globalErrorHandler = require(\"./controller/error\");\nconst userRoute = require(\"./routers/user\");\nconst viewRoute = require(\"./routers/view\");\nconst postRoute = require(\"./routers/post\");\nconst uploadRoute = require(\"./routers/upload\");\n\nconst { inspect } = require(\"util\");\n\nconst app = express();\n\n// setting the view engine to pug and views directory\napp.set(\"view engine\", \"pug\");\napp.set(\"views\", path.join(__dirname, \"views\"));\n\n// serving the public folder\napp.use(express.static(path.join(__dirname, \"public\")));\n\nif (process.env.NODE_ENV === \"development\") {\n    app.use(morgan(\"dev\"));\n}\n\n// setting security HTTP headers\napp.use(helmet());\n\n// Limiting number of requests to prevent\n// DOS and brute force attacks\nconst limiter = rateLimiter({\n    max: process.env.RATE_LIMITER_MAX,\n    windowMs: process.env.RATE_LIMITER_TIME * 60 * 1000,\n    message: `Too many requests from this IP. Please try again in ${process.env.RATE_LIMITER_TIME} minutes`,\n});\napp.use(\"/api\", limiter);\n\n// accepting req.body and limiting the incoming data by 10kb of size\napp.use(\n    express.json({\n        limit: \"10kb\",\n    })\n);\n\n// accepting cookies\napp.use(cookieParser());\n\n// preventing object of EditorJs from data sanitization\napp.use((req, res, next) => {\n    if (req.body.body) req.EditorJsBody = {...req.body.body };\n    next();\n});\n\n// Data sanitization against NoSQL query attack\napp.use(mongoSanitize());\n\n// Data sanitization against XSS\napp.use(xss());\n\n// preventing HTTP parameter polution\napp.use(hpp());\n\n// preventing object of EditorJs from data sanitization\napp.use((req, res, next) => {\n    if (req.EditorJsBody) req.body.body = req.EditorJsBody;\n    next();\n});\n\n// ROUTES\napp.use(\"/api/user\", userRoute);\napp.use(\"/api/post\", postRoute);\napp.use(\"/api/upload\", uploadRoute);\napp.use(\"/\", viewRoute);\n\n// Handling unhandled routes\napp.all(\"*\", (req, res, next) => {\n    if (req.originalUrl.startsWith(\"/api\")) {\n        return next(\n            new AppError(`can't find ${req.originalUrl} on this server!`, 404)\n        );\n    }\n    next(new AppError(\"Page not found! 404\", 404));\n});\n\n// Global Error Handler\napp.use(globalErrorHandler);\n\nmodule.exports = app;"
+            }
+        },
+        {
+            "type": "embed",
+            "data": {
+                "service": "youtube",
+                "source": "https://www.youtube.com/watch?v=1z6sLQJHbP0",
+                "embed": "https://www.youtube.com/embed/1z6sLQJHbP0",
+                "width": 580,
+                "height": 320,
+                "caption": "This is a Youtube video!<br>"
+            }
+        },
+        {
+            "type": "embed",
+            "data": {
+                "service": "twitter",
+                "source": "https://twitter.com/elonmusk/status/1310001082278371328",
+                "embed": "https://twitframe.com/show?url=https://twitter.com/elonmusk/status/1310001082278371328",
+                "width": 600,
+                "height": 300,
+                "caption": "This is a twitter embed!<br>"
+            }
+        },
+        {
+            "type": "warning",
+            "data": {
+                "title": "Watch Out!!!<br>",
+                "message": "This is a test WARNING!<br>"
+            }
+        },
+        {
+            "type": "delimiter"
+        },
+        {
+            "type": "raw",
+            "data": {
+                "html": "<head>\n  <script src=\"https://kit.fontawesome.com/88c924d76c.js\" crossorigin=\"anonymous\"></script>\n</head>\n<div class=\"sidebar_area\">\n        <ul class=\"sidebar-nav_container\">\n            <li class=\"sidebar-nav_item\">\n                <a class=\"_main\"><i class=\" fa fa-home\" aria-hidden=\"true\"></i> Home</a>\n            </li>\n            <li class=\"sidebar-nav_item\">\n                <a class=\"_main\" href=\"#\" onclick=\"return false\" aria-label=\"User menu, opens user options\">\n                    <i class=\"fa fa-user\" aria-hidden=\"true\"></i> Hi Guest <span class=\"arrow\"></span>\n                </a>\n                <ul>\n                    <li class=\"_sub active\"><a>View Profile</a></li>\n                    <li class=\"_sub\"><a>Update Profile</a></li>\n                    <li class=\"_sub\"><a>Reset Password </a> </li>\n                </ul>\n            </li>\n            <li class=\"sidebar-nav_item\">\n                <a class=\"_main\" href=\"#\" onclick=\"return false\" aria-label=\"Posts menu, open posts options\">\n                    <i class=\"fa fa-file\" aria-hidden=\"true\"></i> Posts <span class=\"arrow\"></span>\n                </a>\n                <ul>\n                    <li class=\"_sub\"><a>View</a></li>\n                    <li class=\"_sub\"><a>Add</a></li>\n                    <li class=\"_sub\"><a>Archive</a> </li>\n                </ul>\n            </li>\n            <li class=\"sidebar-nav_item\">\n                <a class=\"_main\"><i class=\" fa fa-question-circle\" aria-hidden=\"true\"></i> Help</a>\n            </li>\n            <li class=\"sidebar-nav_item\">\n                <a class=\"_main\"><i class=\" fa fa-cog\" aria-hidden=\"true\"></i> Settings</a>\n            </li>\n            <li class=\"sidebar-nav_item\">\n                <a class=\"_main\"><i class=\" fa fa-power-off\" aria-hidden=\"true\"></i> Logout </a>\n            </li>\n        </ul>\n    </div>"
+            }
+        },
+        {
+            "type": "checklist",
+            "data": {
+                "items": [{
+                        "text": "I'm a Developer",
+                        "checked": true
+                    },
+                    {
+                        "text": "I'm an introvert",
+                        "checked": true
+                    },
+                    {
+                        "text": "I love science!",
+                        "checked": false
+                    }
+                ]
+            }
+        },
+        {
+            "type": "embed",
+            "data": {
+                "service": "codepen",
+                "source": "https://codepen.io/traversbray/pen/NWNZwPq",
+                "embed": "https://codepen.io/traversbray/embed/NWNZwPq?height=300&amp;theme-id=0&amp;default-tab=css,result&amp;embed-version=2",
+                "width": 600,
+                "height": 300,
+                "caption": ""
+            }
+        },
+        {
+            "type": "code",
+            "data": {
+                "code": "<b class=\"screen-overlay\"></b>\n<nav class=\"navbar2 navbar d-lg-none fixed-top navbar-expand-lg navbar-light\">\n  <div class=\"container\">\n    <button data-trigger=\"#navbar_main\" class=\"navbar-toggler\" type=\"button\"><span class=\"navbar-toggler-icon\"></span></button>\n    <a class=\"navbar-brand mx-auto\" href=\"#\">Navbar</a>\n  </div>\n</nav>\n\n<!-- d-lg-none -->\n\n<nav id=\"navbar_main\" class=\"mobile-offcanvas navbar fixed-top navbar-expand-lg navbar-light\">\n  <div class=\"container nav-cont\">\n    <a class=\"navbar-brand d-none d-lg-block\" href=\"#\">Navbar</a>\n    <div class=\"offcanvas-header\">\n      <button class=\"navbar-toggler btn-close\"><span class=\"navbar-toggler-icon\"></span></button>\n      <!-- <h5 class=\"py-2 mx-auto text-white d-inline mx-auto\">Navbar</h5> -->\n    </div>\n    <ul class=\"navbar-nav\">\n      <li class=\"nav-item active\"> <a class=\"nav-link\" href=\"#\">Home </a> </li>\n      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\"> About </a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\"> Services </a></li>\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link  dropdown-toggle\" href=\"#\" data-toggle=\"dropdown\"> More items </a>\n        <ul class=\"dropdown-menu\">\n          <li><a class=\"dropdown-item\" href=\"#\"> Submenu item 1</a></li>\n          <li><a class=\"dropdown-item\" href=\"#\"> Submenu item 2 </a></li>\n        </ul>\n      </li>\n    </ul>\n  </div>\n\n</nav>\n<br><br>\n\n<header class=\"section-header py-4\">\n  <div class=\"container\">\n    <h2>Demo page</h2>\n    <p> change the page width to mobile width (992px or less) to see the effect</p>\n    <p><b>Please Note</b>: you need to import jquery, bootstrap.js,bootstrap.css for this code to work properly. </p>\n  </div>\n</header> <!-- section-header.// -->"
+            }
+        },
+        {
+            "type": "embed",
+            "data": {
+                "service": "twitter",
+                "source": "https://twitter.com/SpaceX/status/1310962850601545728",
+                "embed": "https://twitframe.com/show?url=https://twitter.com/SpaceX/status/1310962850601545728",
+                "width": 600,
+                "height": 300,
+                "caption": ""
+            }
+        },
+        {
+            "type": "embed",
+            "data": {
+                "service": "instagram",
+                "source": "https://www.instagram.com/p/CFuMV9MhwlL",
+                "embed": "https://www.instagram.com/p/CFuMV9MhwlL/embed",
+                "width": 400,
+                "height": 505,
+                "caption": ""
+            }
+        },
+        {
+            "type": "raw",
+            "data": {
+                "html": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/Im0ll4VMkhY\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+            }
+        },
+        {
+            "type": "image",
+            "data": {
+                "file": {
+                    "url": "http://127.0.0.1:5000/img/Wallpaper-Mix-2017.04---24-5f5f73c9754360259669284a-1601846783120.jpg",
+                    "fileName": "Wallpaper-Mix-2017.04---24-5f5f73c9754360259669284a-1601846783120.jpg"
+                },
+                "caption": "dfvsdfvdsvdfvs",
+                "withBorder": false,
+                "stretched": false,
+                "withBackground": false
+            }
+        },
+        {
+            "type": "raw",
+            "data": {
+                "html": "<blockquote class=\"imgur-embed-pub\" lang=\"en\" data-id=\"a/Vd1xADQ\"  ><a href=\"//imgur.com/a/Vd1xADQ\">Dark arts and crafts!</a></blockquote><script async src=\"//s.imgur.com/min/embed.js\" charset=\"utf-8\"></script>"
+            }
+        }
+    ],
+    "version": "2.18.0"
+}
