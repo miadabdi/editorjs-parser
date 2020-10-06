@@ -1,8 +1,10 @@
 const defaultConfig = {
     image: {
-        withCaption: "figure", // figure or img (figcaption will be used for caption)
-        figureClass: "fig-img",
+        use: "figure", // figure or img (figcaption will be used for caption of figure)
         imgClass: "img",
+        figureClass: "fig-img",
+        figCapClass: "fig-cap",
+        path: "absolute",
     },
 };
 
