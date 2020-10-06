@@ -1,10 +1,12 @@
 const defaultParsers = require("./parsers");
 const defaultConfig = require("./config");
+const { mergeDeep } = require("./utitlities");
 
 class edjsParser {
     constructor(config = {}, customs = {}) {
-        this.config = Object.assign(defaultConfig, config);
+        this.config = mergeDeep(defaultConfig, config);
         this.parsers = Object.assign(defaultParsers, customs);
+        console.log(this.config);
     }
 
     parse(EditorJsObject) {
@@ -19,12 +21,16 @@ class edjsParser {
     }
 
     parseBlock(block) {
-        try {
-            return this.parsers[block.type](block.data);
-        } catch (err) {
+        if (!this.parsers[block.type]) {
             return new Error(
                 `${block.type} is not supported! Define your own custom function.`
             );
+        }
+        try {
+            console.log(this.parsers, block.type);
+            return this.parsers[block.type](block.data, this.config);
+        } catch (err) {
+            console.log(err);
         }
     }
 }
