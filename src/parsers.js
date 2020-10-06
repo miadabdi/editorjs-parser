@@ -1,9 +1,4 @@
-function sanitizeHtml(markup) {
-    markup = markup.replace(/&/g, "&amp;");
-    markup = markup.replace(/</g, "&lt;");
-    markup = markup.replace(/>/g, "&gt;");
-    return markup;
-}
+const { sanitizeHtml } = require("./utitlities");
 
 const defaultParsers = {
         paragraph: function(data) {
@@ -37,8 +32,29 @@ const defaultParsers = {
     return `<table><tbody>${rows.join("")}</tbody></table>`;
   },
 
-  image: function (data) {
-    return `<img src="/img/${data.file.fileName}" alt="${data.caption}">`;
+  image: function (data, config) {
+    const imageConditions = `${data.stretched ? "img-fullwidth" : ""} ${
+      data.withBorder ? "img-border" : ""
+    }`;
+    const imgClass = config.image.imgClass || "";
+    let imageSrc;
+    if (config.image.path === "absolute") {
+      imageSrc = data.file.url;
+    } else {
+      imageSrc = config.image.path.replace(
+        /<(.+)>/,
+        (match, p1) => data.file[p1]
+      );
+    }
+
+    if (config.image.use === "img") {
+      return `<img class="${imageConditions} ${imgClass}" src="${imageSrc}" alt="${data.caption}">`;
+    } else if (config.image.use === "figure") {
+      const figureClass = config.image.figureClass || "";
+      const figCapClass = config.image.figCapClass || "";
+
+      return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${data.caption}"><figcaption class="${figCapClass}">${data.caption}</figcaption></figure>`;
+    }
   },
   code: function (data) {
     const markup = sanitizeHtml(data.code);
