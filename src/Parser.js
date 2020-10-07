@@ -6,7 +6,6 @@ class edjsParser {
     constructor(config = {}, customs = {}) {
         this.config = mergeDeep(defaultConfig, config);
         this.parsers = Object.assign(defaultParsers, customs);
-        console.log(this.config);
     }
 
     parse(EditorJsObject) {
@@ -27,10 +26,9 @@ class edjsParser {
             );
         }
         try {
-            console.log(this.parsers, block.type);
             return this.parsers[block.type](block.data, this.config);
         } catch (err) {
-            console.log(err);
+            return err;
         }
     }
 }
