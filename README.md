@@ -19,6 +19,8 @@ const edjsParser = require("editorjs-parser");
 const parser = new edjsParser(config, customParsers);
 ```
 
+**NOTE:** Parameters are optional. If you want to only pass the second parameter, set the first parameter to `undefined`.
+
 To parse all blocks, pass the exact EditorJs' output object:
 
 ```javascript
