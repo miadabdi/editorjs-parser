@@ -1,8 +1,8 @@
 const { sanitizeHtml } = require("./utitlities");
 
 const defaultParsers = {
-        paragraph: function(data) {
-            return `<p> ${data.text} </p>`;
+        paragraph: function(data, config) {
+            return `<p class="${config.paragraph.pClass}"> ${data.text} </p>`;
         },
 
         header: function(data) {
@@ -56,9 +56,9 @@ const defaultParsers = {
       return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${data.caption}"><figcaption class="${figCapClass}">${data.caption}</figcaption></figure>`;
     }
   },
-  code: function (data) {
+  code: function (data, config) {
     const markup = sanitizeHtml(data.code);
-    return `<pre><code class="code-block">${markup}</code></pre>`;
+    return `<pre><code class="${config.code.codeBlockClass}">${markup}</code></pre>`;
   },
   raw: function (data) {
     return data.html;
