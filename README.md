@@ -44,7 +44,7 @@ const markup = parser.parseBlock(block);
 - Embed
 - Image
 
-## Custom or overriding parser method
+## Custom or overriding parser methods
 
 If you have a custom block like so:
 
@@ -61,14 +61,63 @@ You can pass an object of custom parsers or override existing parsers of support
 
 ```javascript
 {
-    customBlock: function(data) {
+    customBlock: function(data, config) {
         // parsing functionality
+        // the config arg is user provided config merged with default config
     },
-    image: function(data): {
+    image: function(data, config): {
         return `<img src="${data.file.url}" alt="${data.caption}" >`;
     }
 }
 ```
+
+**NOTE:** the config arg is user provided config merged with default configuration.
+
+## Configuration
+
+This is the default configuration. You can override any of these properties by passing a config object.
+
+```javascript
+{
+    image: {
+        use: "figure",
+        // use figure or img tag for images (figcaption will be used for caption of figure)
+        // if you use figure, caption will be visible
+        imgClass: "img", // used class for img tags
+        figureClass: "fig-img", // used class for figure tags
+        figCapClass: "fig-cap", // used class for figcaption tags
+        path: "absolute",
+        // if absolute is passed, the url property which is the absolute path to the image will be used
+        // otherwise pass a relative path with the filename property in <> like so: '/img/<fileName>'
+    },
+    paragraph: {
+        pClass: 'paragraph' // used class for paragraph tags
+    },
+    code: {
+        codeBlockClass: 'code-block' // used class for code blocks
+    }
+};
+```
+
+To use the relative path, you should return the filename of the uploaded image from your backend, alongside the url (for more info [docs](https://github.com/editor-js/image#backend-response-format-)).
+
+Then include the property name of filename in config like so: (for example the property name of the returned filename is `imageFileName`)
+
+```javascript
+{
+  image: {
+    path: "/img/<imageFileName>";
+  }
+}
+```
+
+**NOTE:** Images will have class `img`.
+
+**NOTE:** If the image is streched, the parsed `img` tag will have `img-fullwidth` as class.
+
+**NOTE:** If image is set to have a border, the parsed `img` tag will have `img-border` as class.
+
+You can style, according to these classes.
 
 # Contributing
 
