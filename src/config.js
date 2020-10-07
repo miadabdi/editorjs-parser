@@ -6,6 +6,12 @@ const defaultConfig = {
         figCapClass: "fig-cap",
         path: "absolute",
     },
+    paragraph: {
+        pClass: 'paragraph'
+    },
+    code: {
+        codeBlockClass: 'code-block'
+    }
 };
 
 module.exports = defaultConfig;
