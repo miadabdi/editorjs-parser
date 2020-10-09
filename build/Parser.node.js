@@ -1,6 +1,37 @@
-import { sanitizeHtml } from "./utitlities";
+'use strict';
 
-export default {
+const isObject = function(item) {
+    return item && typeof item === "object" && !Array.isArray(item);
+};
+
+const mergeDeep = function(target, source) {
+    let output = Object.assign({}, target);
+    if (isObject(target) && isObject(source)) {
+        Object.keys(source).forEach((key) => {
+            if (isObject(source[key])) {
+                if (!(key in target))
+                    Object.assign(output, {
+                        [key]: source[key],
+                    });
+                else output[key] = mergeDeep(target[key], source[key]);
+            } else {
+                Object.assign(output, {
+                    [key]: source[key],
+                });
+            }
+        });
+    }
+    return output;
+};
+
+const sanitizeHtml = function(markup) {
+    markup = markup.replace(/&/g, "&amp;");
+    markup = markup.replace(/</g, "&lt;");
+    markup = markup.replace(/>/g, "&gt;");
+    return markup;
+};
+
+var defaultParsers = {
     paragraph: function(data, config) {
         return `<p class="${config.paragraph.pClass}"> ${data.text} </p>`;
     },
@@ -86,3 +117,52 @@ export default {
     }
   },
 };
+
+var defaultConfig = {
+    image: {
+        use: "figure", // figure or img (figcaption will be used for caption of figure)
+        imgClass: "img",
+        figureClass: "fig-img",
+        figCapClass: "fig-cap",
+        path: "absolute",
+    },
+    paragraph: {
+        pClass: "paragraph",
+    },
+    code: {
+        codeBlockClass: "code-block",
+    },
+};
+
+class edjsParser {
+    constructor(config = {}, customs = {}) {
+        this.config = mergeDeep(defaultConfig, config);
+        this.parsers = Object.assign(defaultParsers, customs);
+    }
+
+    parse(EditorJsObject) {
+        const html = EditorJsObject.blocks.map((block) => {
+            const markup = this.parseBlock(block);
+            if (markup instanceof Error) {
+                return ""; // parser for this kind of block doesn't exist
+            }
+            return markup;
+        });
+        return html.join("");
+    }
+
+    parseBlock(block) {
+        if (!this.parsers[block.type]) {
+            return new Error(
+                `${block.type} is not supported! Define your own custom function.`
+            );
+        }
+        try {
+            return this.parsers[block.type](block.data, this.config);
+        } catch (err) {
+            return err;
+        }
+    }
+}
+
+module.exports = edjsParser;
