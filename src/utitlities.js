@@ -1,8 +1,8 @@
-const isObject = function(item) {
+export const isObject = function(item) {
     return item && typeof item === "object" && !Array.isArray(item);
 };
 
-const mergeDeep = function(target, source) {
+export const mergeDeep = function(target, source) {
     let output = Object.assign({}, target);
     if (isObject(target) && isObject(source)) {
         Object.keys(source).forEach((key) => {
@@ -22,13 +22,9 @@ const mergeDeep = function(target, source) {
     return output;
 };
 
-const sanitizeHtml = function(markup) {
+export const sanitizeHtml = function(markup) {
     markup = markup.replace(/&/g, "&amp;");
     markup = markup.replace(/</g, "&lt;");
     markup = markup.replace(/>/g, "&gt;");
     return markup;
 };
-
-exports.sanitizeHtml = sanitizeHtml;
-exports.isObject = isObject;
-exports.mergeDeep = mergeDeep;

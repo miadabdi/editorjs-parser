@@ -1,8 +1,8 @@
-const defaultParsers = require("./parsers");
-const defaultConfig = require("./config");
-const { mergeDeep } = require("./utitlities");
+import defaultParsers from "./parsers";
+import defaultConfig from "./config";
+import { mergeDeep } from "./utitlities";
 
-class edjsParser {
+export default class edjsParser {
     constructor(config = {}, customs = {}) {
         this.config = mergeDeep(defaultConfig, config);
         this.parsers = Object.assign(defaultParsers, customs);
@@ -32,5 +32,3 @@ class edjsParser {
         }
     }
 }
-
-module.exports = edjsParser;

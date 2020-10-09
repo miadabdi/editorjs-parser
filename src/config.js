@@ -1,4 +1,4 @@
-const defaultConfig = {
+export default {
     image: {
         use: "figure", // figure or img (figcaption will be used for caption of figure)
         imgClass: "img",
@@ -7,11 +7,9 @@ const defaultConfig = {
         path: "absolute",
     },
     paragraph: {
-        pClass: 'paragraph'
+        pClass: "paragraph",
     },
     code: {
-        codeBlockClass: 'code-block'
-    }
+        codeBlockClass: "code-block",
+    },
 };
-
-module.exports = defaultConfig;

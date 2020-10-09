@@ -12,7 +12,13 @@ npm install --save editorjs-parser
 
 # Usage
 
-To import the package:
+To import the package in browser:
+
+```javascript
+import edjsParser from "editorjs-parser";
+```
+
+To import the package in Node:
 
 ```javascript
 const edjsParser = require("editorjs-parser");
