@@ -49,8 +49,12 @@ var defaultParsers = {
         return `<${type}>${items}</${type}>`;
     },
 
-    quote: function(data) {
-        return `<blockquote><p>${data.text}</p><cite>${data.caption}</cite></blockquote>`;
+    quote: function(data, config) {
+        let alignment = "";
+        if (config.quote.applyAlignment) {
+            alignment = `style="text-align: ${data.alignment};"`;
+        }
+        return `<blockquote ${alignment}><p>${data.text}</p><cite>${data.caption}</cite></blockquote>`;
     },
 
     table: function(data) {
@@ -140,6 +144,10 @@ var defaultConfig = {
         useProvidedLength: false,
         // set to true if you want the returned width and height of editorjs to be applied
         // NOTE: sometimes source site overrides the lengths so it does not work 100%
+    },
+    quote: {
+        applyAlignment: false,
+        // if set to true blockquote element will have text-align css property set
     },
 };
 

@@ -18,8 +18,12 @@ export default {
         return `<${type}>${items}</${type}>`;
     },
 
-    quote: function(data) {
-        return `<blockquote><p>${data.text}</p><cite>${data.caption}</cite></blockquote>`;
+    quote: function(data, config) {
+        let alignment = "";
+        if (config.quote.applyAlignment) {
+            alignment = `style="text-align: ${data.alignment};"`;
+        }
+        return `<blockquote ${alignment}><p>${data.text}</p><cite>${data.caption}</cite></blockquote>`;
     },
 
     table: function(data) {
