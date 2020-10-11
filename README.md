@@ -4,6 +4,11 @@ editorjs-parser is a NPM package for parsing the output object of [EditorJs](htt
 
 # Installation
 
+### CDN
+
+- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.node.js (Node only)
+- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.browser.js (Browser only)
+
 Use the package manager [npm](https://www.npmjs.com/) to install editorjs-parser.
 
 ```bash
@@ -12,10 +17,16 @@ npm install --save editorjs-parser
 
 # Usage
 
-To import the package in browser:
+To use the package in browser just call `edjsParser` class:
 
 ```javascript
-import edjsParser from "editorjs-parser";
+const parser = new edjsParser(config, customParsers);
+```
+
+To import in Front-end code through NPM:
+
+```javascript
+import edjsParser from "editorjs-parser/build/Parser.node";
 ```
 
 To import the package in Node:
