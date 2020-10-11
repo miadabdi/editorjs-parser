@@ -99,24 +99,27 @@ This is the default configuration. You can override any of these properties by p
 ```javascript
 {
     image: {
-        use: "figure",
-        // use figure or img tag for images (figcaption will be used for caption of figure)
-        // if you use figure, caption will be visible
-        imgClass: "img", // used class for img tags
-        figureClass: "fig-img", // used class for figure tags
-        figCapClass: "fig-cap", // used class for figcaption tags
+        use: "figure", // figure or img (figcaption will be used for caption of figure)
+        imgClass: "img",
+        figureClass: "fig-img",
+        figCapClass: "fig-cap",
         path: "absolute",
-        // if absolute is passed, the url property which is the absolute path to the image will be used
-        // otherwise pass a relative path with the filename property in <> like so: '/img/<fileName>'
     },
     paragraph: {
-        pClass: 'paragraph' // used class for paragraph tags
+        pClass: "paragraph",
     },
     code: {
-        codeBlockClass: 'code-block' // used class for code blocks
-    }
+        codeBlockClass: "code-block",
+    },
+    embed: {
+        useProvidedLength: false,
+        // set to true if you want the returned width and height of editorjs to be applied
+        // NOTE: sometimes source site overrides the lengths so it does not work 100%
+    },
 };
 ```
+
+### Relative path
 
 To use the relative path, you should return the filename of the uploaded image from your backend, alongside the url (for more info [docs](https://github.com/editor-js/image#backend-response-format-)).
 
@@ -137,6 +140,18 @@ Then include the property name of filename in config like so: (for example the p
 **NOTE:** If image is set to have a border, the parsed `img` tag will have `img-border` as class.
 
 You can style, according to these classes.
+
+### Apply provided lengths
+
+If you want the returned width and height of embeded element to be applied, set `useProvidedLength` option to true in config:
+
+```javascript
+{
+    embed: {
+            useProvidedLength: true,
+    }
+}
+```
 
 # Contributing
 

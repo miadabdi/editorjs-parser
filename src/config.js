@@ -12,4 +12,9 @@ export default {
     code: {
         codeBlockClass: "code-block",
     },
+    embed: {
+        useProvidedLength: false,
+        // set to true if you want the returned width and height of editorjs to be applied
+        // NOTE: sometimes source site overrides the lengths so it does not work 100%
+    },
 };
