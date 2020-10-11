@@ -97,29 +97,33 @@ You can pass an object of custom parsers or override existing parsers of support
 This is the default configuration. You can override any of these properties by passing a config object.
 
 ```javascript
-{
-    image: {
-        use: "figure", // figure or img (figcaption will be used for caption of figure)
-        imgClass: "img",
-        figureClass: "fig-img",
-        figCapClass: "fig-cap",
-        path: "absolute",
-    },
-    paragraph: {
-        pClass: "paragraph",
-    },
-    code: {
-        codeBlockClass: "code-block",
-    },
-    embed: {
-        useProvidedLength: false,
-        // set to true if you want the returned width and height of editorjs to be applied
-        // NOTE: sometimes source site overrides the lengths so it does not work 100%
-    },
+export default {
+  image: {
+    use: "figure", // figure or img (figcaption will be used for caption of figure)
+    imgClass: "img",
+    figureClass: "fig-img",
+    figCapClass: "fig-cap",
+    path: "absolute",
+  },
+  paragraph: {
+    pClass: "paragraph",
+  },
+  code: {
+    codeBlockClass: "code-block",
+  },
+  embed: {
+    useProvidedLength: false,
+    // set to true if you want the returned width and height of editorjs to be applied
+    // NOTE: sometimes source site overrides the lengths so it does not work 100%
+  },
+  quote: {
+    applyAlignment: false,
+    // if set to true blockquote element will have text-align css property set
+  },
 };
 ```
 
-### Relative path
+### Relative path (images)
 
 To use the relative path, you should return the filename of the uploaded image from your backend, alongside the url (for more info [docs](https://github.com/editor-js/image#backend-response-format-)).
 
@@ -141,7 +145,7 @@ Then include the property name of filename in config like so: (for example the p
 
 You can style, according to these classes.
 
-### Apply provided lengths
+### Apply provided lengths (embeds)
 
 If you want the returned width and height of embeded element to be applied, set `useProvidedLength` option to true in config:
 
@@ -150,6 +154,18 @@ If you want the returned width and height of embeded element to be applied, set 
     embed: {
             useProvidedLength: true,
     }
+}
+```
+
+### Qoute Alignment (quotes)
+
+If you need the returned alignment of blockquotes to be set, set `applyAlignment` to true in config:
+
+```javascript
+{
+  quote: {
+    applyAlignment: true;
+  }
 }
 ```
 
