@@ -147,6 +147,8 @@ Then include the property name of filename in config like so: (for example the p
 
 **NOTE:** If image is set to have a border, the parsed `img` tag will have `img-border` as class.
 
+**NOTE:** If `withBackground` is set to true, the parsed `img` tag will have `img-bg` as class.
+
 You can style, according to these classes.
 
 ### Apply provided lengths (embeds)

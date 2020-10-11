@@ -71,7 +71,7 @@ var edjsParser = (function () {
       image: function (data, config) {
         const imageConditions = `${data.stretched ? "img-fullwidth" : ""} ${
       data.withBorder ? "img-border" : ""
-    }`;
+    } ${data.withBackground ? "img-bg" : ""}`;
         const imgClass = config.image.imgClass || "";
         let imageSrc;
         if (config.image.path === "absolute") {
