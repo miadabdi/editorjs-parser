@@ -6,8 +6,8 @@ editorjs-parser is a NPM package for parsing the output object of [EditorJs](htt
 
 ### CDN
 
-- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.node.js (Node only)
-- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.browser.js (Browser only)
+- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.node.min.js (Node only)
+- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.browser.min.js (Browser only)
 
 Use the package manager [npm](https://www.npmjs.com/) to install editorjs-parser.
 
@@ -97,19 +97,23 @@ You can pass an object of custom parsers or override existing parsers of support
 This is the default configuration. You can override any of these properties by passing a config object.
 
 ```javascript
-export default {
+{
   image: {
-    use: "figure", // figure or img (figcaption will be used for caption of figure)
-    imgClass: "img",
-    figureClass: "fig-img",
-    figCapClass: "fig-cap",
+    use: "figure",
+    // use figure or img tag for images (figcaption will be used for caption of figure)
+    // if you use figure, caption will be visible
+    imgClass: "img", // used class for img tags
+    figureClass: "fig-img", // used class for figure tags
+    figCapClass: "fig-cap", // used class for figcaption tags
     path: "absolute",
+    // if absolute is passed, the url property which is the absolute path to the image will be used
+    // otherwise pass a relative path with the filename property in <> like so: '/img/<fileName>'
   },
   paragraph: {
-    pClass: "paragraph",
+    pClass: "paragraph", // used class for paragraph tags
   },
   code: {
-    codeBlockClass: "code-block",
+    codeBlockClass: "code-block", // used class for code blocks
   },
   embed: {
     useProvidedLength: false,
