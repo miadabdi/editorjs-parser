@@ -33,7 +33,7 @@ To import the package in Node:
 
 ```javascript
 const edjsParser = require("editorjs-parser");
-const parser = new edjsParser(config, customParsers);
+const parser = new edjsParser(config, customParsers, embedMarkup);
 ```
 
 **NOTE:** Parameters are optional. If you want to only pass the second parameter, set the first parameter to `undefined`.
@@ -49,6 +49,10 @@ To parse one block, pass a complete block:
 ```javascript
 const markup = parser.parseBlock(block);
 ```
+
+**NOTE:** HTML markup in code blocks are already sanitized and ready to be send to browser. You don't have to do anything.
+
+**NOTE:** Code blocks are compatible with [highlight.js](https://github.com/highlightjs/highlight.js/)
 
 ## Supported blocks
 
@@ -90,7 +94,7 @@ You can pass an object of custom parsers or override existing parsers of support
 }
 ```
 
-**NOTE:** the config arg is user provided config merged with default configuration.
+**NOTE:** The config arg is user provided config merged with default configuration.
 
 ## Configuration
 
@@ -162,6 +166,28 @@ If you want the returned width and height of embeded element to be applied, set 
     }
 }
 ```
+
+### Custom embed markup (embeds)
+
+If you want to render a custom markup for your embed service, pass it in an object in third argument. For example if you want your own markup to be rendered for Youtube video embed, you got to do this:
+
+```javascript
+const parser = new edjsParser(undifined, undifined, {
+  youtube: `Your markup in string`,
+});
+```
+
+You also have access to `data` object. To use that you should put variable names in placeholders, like so:
+
+```javascript
+const parser = new edjsParser(undifined, undifined, {
+  youtube: `<iframe src="<%data.embed%>" width="<%data.width%>"><%data.caption%></iframe>`,
+});
+```
+
+**NOTE:** If you want to have [useProvidedLength](#apply-provided-lengths-embeds) functionality, use `<%data.length%>` instead of `<%data.width%>` and `<%data.height%>` in embed markups.
+
+`<%data.length%>` returns string like this: `width="300" height="500"`
 
 ### Qoute Alignment (quotes)
 
