@@ -23,13 +23,7 @@ To use the package in browser just call `edjsParser` class:
 const parser = new edjsParser(config, customParsers, embedMarkup);
 ```
 
-To import in Front-end code through NPM:
-
-```javascript
-import edjsParser from "editorjs-parser/build/Parser.node";
-```
-
-To import the package in Node:
+To import the package in Node and Front-end code:
 
 ```javascript
 const edjsParser = require("editorjs-parser");
