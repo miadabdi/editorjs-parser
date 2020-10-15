@@ -3,7 +3,7 @@
     "version": "1.4.1",
     "description": "This package parses output blocks of editorjs to html",
     "main": "./build/Parser.node.js",
-    "module": "./build/Parser.browser.js",
+    "module": "./build/Parser.esm.js",
     "directories": {
         "test": "test"
     },
@@ -23,6 +23,9 @@
     "author": "Michael Jones <2001michaeljones@gmail.com>",
     "license": "MIT",
     "devDependencies": {
+        "@babel/core": "^7.12.0",
+        "@babel/preset-env": "^7.12.0",
+        "@rollup/plugin-babel": "^5.2.1",
         "rollup": "^2.29.0"
     }
 }
