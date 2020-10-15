@@ -20,7 +20,7 @@ npm install --save editorjs-parser
 To use the package in browser just call `edjsParser` class:
 
 ```javascript
-const parser = new edjsParser(config, customParsers);
+const parser = new edjsParser(config, customParsers, embedMarkup);
 ```
 
 To import in Front-end code through NPM:
