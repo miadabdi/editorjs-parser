@@ -1,6 +1,6 @@
 {
     "name": "editorjs-parser",
-    "version": "1.4.2",
+    "version": "1.4.3",
     "description": "This package parses output blocks of editorjs to html",
     "main": "./build/Parser.node.js",
     "module": "./build/Parser.esm.js",
