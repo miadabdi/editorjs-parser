@@ -10,7 +10,10 @@
     "keywords": [
         "editorjs",
         "parser",
-        "html"
+        "html",
+        "clean-data",
+        "json",
+        "parsing"
     ],
     "scripts": {
         "test": "node test/test.js",

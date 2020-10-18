@@ -9,6 +9,8 @@ editorjs-parser is a NPM package for parsing the output object of [EditorJs](htt
 - https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.node.min.js (Node only)
 - https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.browser.min.js (Browser only)
 
+### NPM
+
 Use the package manager [npm](https://www.npmjs.com/) to install editorjs-parser.
 
 ```bash
@@ -17,7 +19,7 @@ npm install --save editorjs-parser
 
 # Usage
 
-To use the package in browser just call `edjsParser` class:
+To use the package in browser, import Browser verison through CDN to your HTML file and just call `edjsParser` class:
 
 ```javascript
 const parser = new edjsParser(config, customParsers, embedMarkup);
@@ -30,7 +32,7 @@ const edjsParser = require("editorjs-parser");
 const parser = new edjsParser(config, customParsers, embedMarkup);
 ```
 
-**NOTE:** Parameters are optional. If you want to only pass the second parameter, set the first parameter to `undefined`.
+**NOTE:** **Parameters are optional**. If you want to only pass the second parameter, set the first parameter to `undefined`.
 
 To parse all blocks, pass the exact EditorJs' output object:
 
@@ -77,7 +79,7 @@ If you have a custom block like so:
 You can pass an object of custom parsers or override existing parsers of supported blocks as the second argument, like so:
 
 ```javascript
-{
+const customParsers = {
     customBlock: function(data, config) {
         // parsing functionality
         // the config arg is user provided config merged with default config
@@ -86,6 +88,8 @@ You can pass an object of custom parsers or override existing parsers of support
         return `<img src="${data.file.url}" alt="${data.caption}" >`;
     }
 }
+
+const parser = new edjsParser(undefined, customParsers);
 ```
 
 **NOTE:** The config arg is user provided config merged with default configuration.
@@ -132,11 +136,13 @@ To use the relative path, you should return the filename of the uploaded image f
 Then include the property name of filename in config like so: (for example the property name of the returned filename is `imageFileName`)
 
 ```javascript
-{
+const config = {
   image: {
     path: "/img/<imageFileName>";
   }
-}
+};
+
+const parser = new edjsParser(config);
 ```
 
 **NOTE:** Images will have class `img`.
@@ -154,11 +160,13 @@ You can style, according to these classes.
 If you want the returned width and height of embeded element to be applied, set `useProvidedLength` option to true in config:
 
 ```javascript
-{
-    embed: {
-            useProvidedLength: true,
-    }
-}
+const config = {
+  embed: {
+    useProvidedLength: true,
+  },
+};
+
+const parser = new edjsParser(config);
 ```
 
 ### Custom embed markup (embeds)
@@ -174,9 +182,11 @@ const parser = new edjsParser(undifined, undifined, {
 You also have access to `data` object. To use that you should put variable names in placeholders, like so:
 
 ```javascript
-const parser = new edjsParser(undifined, undifined, {
+const customEmbeds = {
   youtube: `<iframe src="<%data.embed%>" width="<%data.width%>"><%data.caption%></iframe>`,
-});
+};
+
+const parser = new edjsParser(undifined, undifined, customEmbeds);
 ```
 
 **NOTE:** If you want to have [useProvidedLength](#apply-provided-lengths-embeds) functionality, use `<%data.length%>` instead of `<%data.width%>` and `<%data.height%>` in embed markups.
@@ -188,11 +198,13 @@ const parser = new edjsParser(undifined, undifined, {
 If you need the returned alignment of blockquotes to be set, set `applyAlignment` to true in config:
 
 ```javascript
-{
+const config = {
   quote: {
     applyAlignment: true;
   }
-}
+};
+
+const parser = new edjsParser(config);
 ```
 
 # Contributing
