@@ -51,13 +51,15 @@ export default {
       );
     }
 
+    const alt = data.alt || data.caption;
+
     if (config.image.use === "img") {
-      return `<img class="${imageConditions} ${imgClass}" src="${imageSrc}" alt="${data.caption}">`;
+      return `<img class="${imageConditions} ${imgClass}" src="${imageSrc}" alt="${alt}">`;
     } else if (config.image.use === "figure") {
       const figureClass = config.image.figureClass || "";
       const figCapClass = config.image.figCapClass || "";
 
-      return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${data.caption}"><figcaption class="${figCapClass}">${data.caption}</figcaption></figure>`;
+      return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${alt}"><figcaption class="${figCapClass}">${data.caption}</figcaption></figure>`;
     }
   },
   code: function (data, config) {
