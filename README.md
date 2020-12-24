@@ -156,6 +156,20 @@ const parser = new edjsParser(config);
 
 You can style, according to these classes.
 
+**NOTE:** To use `image` block and `simple-image` block together, you should set the imported `simple-image` module to `simpleImage` key in `tools` and `image` module to `image` key:
+
+```javascript
+var editor = EditorJS({
+  ...
+  tools: {
+    ...
+    simpleImage: SimpleImage,
+    image: ImageTool
+  }
+  ...
+});
+```
+
 ### Apply provided lengths (embeds)
 
 If you want the returned width and height of embeded element to be applied, set `useProvidedLength` option to true in config:
