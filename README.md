@@ -62,6 +62,7 @@ const markup = parser.parseBlock(block);
 - List
 - Embed
 - Image
+- Simple-image
 
 ## Custom or overriding parser methods
 
