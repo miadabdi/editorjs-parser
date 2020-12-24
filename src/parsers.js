@@ -35,7 +35,12 @@ export default {
     });
     return `<table><tbody>${rows.join("")}</tbody></table>`;
   },
-
+  simpleImage: function(data, config) {
+    // this is added for the ability to use both image and simple-image block types
+    // when initializing the Editorjs editor block, you should set imported simple-image 
+    // to simpleImage key, so it would call this function.
+    return this.image(data, config);
+  },
   image: function (data, config) {
     const imageConditions = `${data.stretched ? "img-fullwidth" : ""} ${
       data.withBorder ? "img-border" : ""
