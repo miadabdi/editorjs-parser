@@ -78,7 +78,6 @@ var defaultParsers = {
     });
     return `<table><tbody>${rows.join("")}</tbody></table>`;
   },
-
   image: function (data, config) {
     const imageConditions = `${data.stretched ? "img-fullwidth" : ""} ${
       data.withBorder ? "img-border" : ""
