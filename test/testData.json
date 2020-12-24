@@ -1,6 +1,16 @@
 {
     "time": 1601898039654,
     "blocks": [{
+            "type": "image",
+            "data": {
+                "url": "https://www.tesla.com/tesla_theme/assets/img/_vehicle_redesign/roadster_and_semi/roadster/hero.jpg",
+                "caption": "Roadster // tesla.com",
+                "withBorder": false,
+                "withBackground": false,
+                "stretched": true
+            }
+        },
+        {
             "type": "paragraph",
             "data": {
                 "text": "Hello There, it is a test post related to <a href=\"https://google.com\">Google</a> which is the <b>biggest</b> search engine!"

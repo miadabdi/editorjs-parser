@@ -85,7 +85,13 @@ var defaultParsers = {
     } ${data.withBackground ? "img-bg" : ""}`;
     const imgClass = config.image.imgClass || "";
     let imageSrc;
-    if (config.image.path === "absolute") {
+
+    if (data.url) {
+      // simple-image was used and the image probably is not uploaded to this server
+      // therefore, we use the absolute path provided in data.url
+      // so, config.image.path property is useless in this case!
+      imageSrc = data.url;
+    } else if (config.image.path === "absolute") {
       imageSrc = data.file.url;
     } else {
       imageSrc = config.image.path.replace(
