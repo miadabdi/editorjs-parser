@@ -64,6 +64,8 @@ const markup = parser.parseBlock(block);
 - Image
 - Simple-image
 
+**NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor insatnce, but this parser supports both of them and you can use any of them that fulfills your needs.
+
 ## Custom or overriding parser methods
 
 If you have a custom block like so:
@@ -155,20 +157,6 @@ const parser = new edjsParser(config);
 **NOTE:** If `withBackground` is set to true, the parsed `img` tag will have `img-bg` as class.
 
 You can style, according to these classes.
-
-**NOTE:** To use `image` block and `simple-image` block together, you should set the imported `simple-image` module to `simpleImage` key in `tools` and `image` module to `image` key:
-
-```javascript
-var editor = EditorJS({
-  ...
-  tools: {
-    ...
-    simpleImage: SimpleImage,
-    image: ImageTool
-  }
-  ...
-});
-```
 
 ### Apply provided lengths (embeds)
 
