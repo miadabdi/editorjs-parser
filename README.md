@@ -87,7 +87,7 @@ const customParsers = {
         // parsing functionality
         // the config arg is user provided config merged with default config
     },
-    image: function(data, config): {
+    image: function(data, config) {
         return `<img src="${data.file.url}" alt="${data.caption}" >`;
     }
 }
