@@ -64,7 +64,7 @@ const markup = parser.parseBlock(block);
 - Image
 - Simple-image
 
-**NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor insatnce, but this parser supports both of them and you can use any of them that fulfills your needs.
+**NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor instance, but this parser supports both of them and you can use any of them that fulfills your needs.
 
 ## Custom or overriding parser methods
 
