@@ -1,34 +1,34 @@
 import { sanitizeHtml } from "./utitlities";
 
 export default {
-    paragraph: function(data, config) {
-        return `<p class="${config.paragraph.pClass}"> ${data.text} </p>`;
-    },
+  paragraph: function (data, config) {
+    return `<p class="${config.paragraph.pClass}"> ${data.text} </p>`;
+  },
 
-    header: function(data) {
-        return `<h${data.level}>${data.text}</h${data.level}>`;
-    },
+  header: function (data) {
+    return `<h${data.level}>${data.text}</h${data.level}>`;
+  },
 
-    list: function(data) {
-        const type = data.style === "ordered" ? "ol" : "ul";
-        const items = data.items.reduce(
-            (acc, item) => acc + `<li>${item}</li>`,
-            ""
-        );
-        return `<${type}>${items}</${type}>`;
-    },
+  list: function (data) {
+    const type = data.style === "ordered" ? "ol" : "ul";
+    const items = data.items.reduce(
+      (acc, item) => acc + `<li>${item}</li>`,
+      ""
+    );
+    return `<${type}>${items}</${type}>`;
+  },
 
-    quote: function(data, config) {
-        let alignment = "";
-        if (config.quote.applyAlignment) {
-            alignment = `style="text-align: ${data.alignment};"`;
-        }
-        return `<blockquote ${alignment}><p>${data.text}</p><cite>${data.caption}</cite></blockquote>`;
-    },
+  quote: function (data, config) {
+    let alignment = "";
+    if (config.quote.applyAlignment) {
+      alignment = `style="text-align: ${data.alignment};"`;
+    }
+    return `<blockquote ${alignment}><p>${data.text}</p><cite>${data.caption}</cite></blockquote>`;
+  },
 
-    table: function(data) {
-            const rows = data.content.map((row) => {
-                        return `<tr>${row.reduce(
+  table: function (data) {
+    const rows = data.content.map((row) => {
+      return `<tr>${row.reduce(
         (acc, cell) => acc + `<td>${cell}</td>`,
         ""
       )}</tr>`;
@@ -36,9 +36,8 @@ export default {
     return `<table><tbody>${rows.join("")}</tbody></table>`;
   },
   image: function (data, config) {
-    const imageConditions = `${data.stretched ? "img-fullwidth" : ""} ${
-      data.withBorder ? "img-border" : ""
-    } ${data.withBackground ? "img-bg" : ""}`;
+    const imageConditions = `${data.stretched ? "img-fullwidth" : ""} ${data.withBorder ? "img-border" : ""
+      } ${data.withBackground ? "img-bg" : ""}`;
     const imgClass = config.image.imgClass || "";
     let imageSrc;
 
@@ -62,6 +61,34 @@ export default {
       const figureClass = config.image.figureClass || "";
       const figCapClass = config.image.figCapClass || "";
 
+      return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${data.caption}"><figcaption class="${figCapClass}">${data.caption}</figcaption></figure>`;
+    }
+  },
+  simpleImage: function (data, config) {
+    const imageConditions = `${data.stretched ? "img-fullwidth" : ""} ${data.withBorder ? "img-border" : ""
+      } ${data.withBackground ? "img-bg" : ""}`;
+    const imgClass = config.simpleImage.imgClass || "";
+    let imageSrc;
+
+    if (data.url) {
+      // simple-image was used and the image probably is not uploaded to this server
+      // therefore, we use the absolute path provided in data.url
+      // so, config.image.path property is useless in this case!
+      imageSrc = data.url;
+    } else if (config.simpleImage.path === "absolute") {
+      imageSrc = data.file.url;
+    } else {
+      imageSrc = config.simpleImage.path.replace(
+        /<(.+)>/,
+        (match, p1) => data.file[p1]
+      );
+    }
+
+    if (config.image.use === "img") {
+      return `<img class="${imageConditions} ${imgClass}" src="${imageSrc}" alt="${data.caption}">`;
+    } else if (config.simpleImage.use === "figure") {
+      const figureClass = config.simpleImage.figureClass || "";
+      const figCapClass = config.simpleImage.figCapClass || "";
       return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${data.caption}"><figcaption class="${figCapClass}">${data.caption}</figcaption></figure>`;
     }
   },

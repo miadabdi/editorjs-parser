@@ -1,4 +1,11 @@
 export default {
+    simpleImage: {
+        use: "figure",
+        imgClass: "img-simple",
+        figureClass: "fig-img-simple",
+        figCapClass: "fig-cap-simple",
+        path: "absolute",
+    },
     image: {
         use: "figure", // figure or img (figcaption will be used for caption of figure)
         imgClass: "img",

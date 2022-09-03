@@ -166,7 +166,18 @@
             "data": {
                 "html": "<blockquote class=\"imgur-embed-pub\" lang=\"en\" data-id=\"a/Vd1xADQ\"  ><a href=\"//imgur.com/a/Vd1xADQ\">Dark arts and crafts!</a></blockquote><script async src=\"//s.imgur.com/min/embed.js\" charset=\"utf-8\"></script>"
             }
-        }
+        },
+        {
+            "id": "RDB6MHutIC",
+            "data": {
+              "url": "https://cdn.pixabay.com/photo/2022/08/09/16/19/sea-7375377_960_720.jpg",
+              "caption": "Caption for simple image",
+              "stretched": false,
+              "withBorder": false,
+              "withBackground": false
+            },
+            "type": "simpleImage"
+          }
     ],
     "version": "2.18.0"
 }
