@@ -1,21 +1,26 @@
 # Editorjs-parser
 
+This is a fork of https://github.com/miadabdi/editorjs-parser
+
 editorjs-parser is a NPM package for parsing the output object of [EditorJs](https://github.com/codex-team/editor.js) to HTML.
 
 # Installation
-
-### CDN
-
-- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.node.min.js (Node only)
-- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.browser.min.js (Browser only)
 
 ### NPM
 
 Use the package manager [npm](https://www.npmjs.com/) to install editorjs-parser.
 
 ```bash
-npm install --save editorjs-parser
+npm install --save @herii/editorjs-parser
 ```
+
+### Yarn
+
+
+```bash
+yarn add @herii/editorjs-parser
+```
+
 
 # Usage
 
@@ -64,7 +69,6 @@ const markup = parser.parseBlock(block);
 - Image
 - Simple-image
 
-**NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor instance, but this parser supports both of them and you can use any of them that fulfills your needs.
 
 ## Custom or overriding parser methods
 
@@ -128,6 +132,13 @@ This is the default configuration. You can override any of these properties by p
   quote: {
     applyAlignment: false,
     // if set to true blockquote element will have text-align css property set
+  },
+  simpleImage: {
+    use: "figure",
+    imgClass: "img-simple",
+    figureClass: "fig-img-simple",
+    figCapClass: "fig-cap-simple",
+    path: "absolute",
   },
 };
 ```

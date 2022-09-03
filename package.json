@@ -1,6 +1,6 @@
 {
-  "name": "editorjs-parser",
-  "version": "1.5.3",
+  "name": "@herii/editorjs-parser",
+  "version": "1.5.4",
   "description": "This package parses output blocks of editorjs to html",
   "main": "./build/Parser.node.js",
   "module": "./build/Parser.esm.js",
@@ -13,7 +13,8 @@
     "html",
     "clean-data",
     "json",
-    "parsing"
+    "parsing",
+    "herii"
   ],
   "scripts": {
     "test": "node test/test.js",
@@ -21,9 +22,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/miadabdi/editorjs-parser"
+    "url": "https://github.com/Heriberto-Juarez/editorjs-parser"
   },
-  "author": "Miad Abdi <50056491+miadabdi@users.noreply.github.com>",
+  "author": "Miad Abdi <50056491+miadabdi@users.noreply.github.com>, Heriberto-Juarez",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.12.0",
