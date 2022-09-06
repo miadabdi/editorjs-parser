@@ -1,6 +1,7 @@
 {
     "time": 1601898039654,
-    "blocks": [{
+    "blocks": [
+        {
             "type": "image",
             "data": {
                 "url": "https://www.tesla.com/tesla_theme/assets/img/_vehicle_redesign/roadster_and_semi/roadster/hero.jpg",
@@ -177,6 +178,20 @@
               "withBackground": false
             },
             "type": "simpleImage"
+          }, 
+          {
+            "id": "qvlrLvgUAO",
+            "data": {
+              "link": "https://www.freepik.com/",
+              "meta": {
+                "image": {
+                    "URL": "https://freepik.cdnpk.net/img/logo-fb-en.png"
+                },
+                "title": "Free Vectors, Stock Photos & PSD Downloads | Freepik",
+                "description": "Millions of Free Graphic Resources. ✓ Vectors ✓ Stock Photos ✓ PSD ✓ Icons ✓ All that you need for your Creative Projects"
+              }
+            },
+            "type": "linkTool"
           }
     ],
     "version": "2.18.0"

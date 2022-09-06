@@ -1,5 +1,11 @@
 'use strict';
 
+var extractDomain = require('extract-domain');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var extractDomain__default = /*#__PURE__*/_interopDefaultLegacy(extractDomain);
+
 const isObject = function(item) {
     return item && typeof item === "object" && !Array.isArray(item);
 };
@@ -165,6 +171,30 @@ var defaultParsers = {
       );
     }
   },
+
+  linkTool: function (data, config) {
+
+    const cfg = config.linkTool; // configurations for linkTool
+    // Display meta tags if available (title, description)
+    const imageLink = data?.meta?.image.URL || data?.meta?.image.url || '';
+    let imageDiv = '';
+    if (imageLink?.length > 0) {
+      imageDiv = `<div class="${cfg.imgWrapperClass}">
+        <div class="${cfg.imgBgClass}" style="background-image: url(${imageLink})"></div>
+      </div>`;
+    }
+    return `
+      <a class=" ${cfg.linkCardClass}" href="${data.link}" target="_blank">
+        <div class=${cfg.linkToolMainClass}>
+          <div>
+            ${data?.meta?.title?.length > 0 ? '<p class=' + cfg.titleClass + '>' + data.meta.title + '</p>' : ''}
+            ${data?.meta?.description?.length > 0 ? '<p class=' + cfg.descriptionClass + '>' + data.meta.description + '</p>' : ''}
+            <p class="${cfg.linkClass}">${extractDomain__default["default"](data.link)}</p>
+          </div>
+        </div>
+        ${imageDiv}
+      </a>`
+  }
 };
 
 var defaultConfig = {
@@ -197,6 +227,15 @@ var defaultConfig = {
         applyAlignment: false,
         // if set to true blockquote element will have text-align css property set
     },
+    linkTool: {
+        linkCardClass: 'link-tool-card',
+        linkToolMainClass: 'link-tool-main',
+        titleClass: 'tl-title',
+        descriptionClass: 'tl-description',
+        linkClass: 'tl-link',
+        imgWrapperClass: 'link-image-wrapper',
+        imgBgClass: 'link-img-bg'
+    }
 };
 
 class edjsParser {

@@ -1,3 +1,4 @@
+import extractDomain from "extract-domain";
 import { sanitizeHtml } from "./utitlities";
 
 export default {
@@ -122,4 +123,28 @@ export default {
       );
     }
   },
+
+  linkTool: function (data, config) {
+
+    const cfg = config.linkTool // configurations for linkTool
+    // Display meta tags if available (title, description)
+    const imageLink = data?.meta?.image.URL || data?.meta?.image.url || ''
+    let imageDiv = ''
+    if (imageLink?.length > 0) {
+      imageDiv = `<div class="${cfg.imgWrapperClass}">
+        <div class="${cfg.imgBgClass}" style="background-image: url(${imageLink})"></div>
+      </div>`
+    }
+    return `
+      <a class=" ${cfg.linkCardClass}" href="${data.link}" target="_blank">
+        <div class=${cfg.linkToolMainClass}>
+          <div>
+            ${data?.meta?.title?.length > 0 ? '<p class=' + cfg.titleClass + '>' + data.meta.title + '</p>' : ''}
+            ${data?.meta?.description?.length > 0 ? '<p class=' + cfg.descriptionClass + '>' + data.meta.description + '</p>' : ''}
+            <p class="${cfg.linkClass}">${extractDomain(data.link)}</p>
+          </div>
+        </div>
+        ${imageDiv}
+      </a>`
+  }
 };
