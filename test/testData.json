@@ -1,6 +1,7 @@
 {
     "time": 1601898039654,
-    "blocks": [{
+    "blocks": [
+        {
             "type": "image",
             "data": {
                 "url": "https://www.tesla.com/tesla_theme/assets/img/_vehicle_redesign/roadster_and_semi/roadster/hero.jpg",
@@ -166,7 +167,32 @@
             "data": {
                 "html": "<blockquote class=\"imgur-embed-pub\" lang=\"en\" data-id=\"a/Vd1xADQ\"  ><a href=\"//imgur.com/a/Vd1xADQ\">Dark arts and crafts!</a></blockquote><script async src=\"//s.imgur.com/min/embed.js\" charset=\"utf-8\"></script>"
             }
-        }
+        },
+        {
+            "id": "RDB6MHutIC",
+            "data": {
+              "url": "https://cdn.pixabay.com/photo/2022/08/09/16/19/sea-7375377_960_720.jpg",
+              "caption": "Caption for simple image",
+              "stretched": false,
+              "withBorder": false,
+              "withBackground": false
+            },
+            "type": "simpleImage"
+          }, 
+          {
+            "id": "qvlrLvgUAO",
+            "data": {
+              "link": "https://www.freepik.com/",
+              "meta": {
+                "image": {
+                    "URL": "https://freepik.cdnpk.net/img/logo-fb-en.png"
+                },
+                "title": "Free Vectors, Stock Photos & PSD Downloads | Freepik",
+                "description": "Millions of Free Graphic Resources. ✓ Vectors ✓ Stock Photos ✓ PSD ✓ Icons ✓ All that you need for your Creative Projects"
+              }
+            },
+            "type": "linkTool"
+          }
     ],
     "version": "2.18.0"
 }

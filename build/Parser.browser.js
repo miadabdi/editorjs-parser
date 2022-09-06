@@ -2,14 +2,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
-var edjsParser = function () {
+var edjsParser = function (extractDomain) {
   'use strict';
+
+  function _interopDefaultLegacy(e) {
+    return e && _typeof(e) === 'object' && 'default' in e ? e : {
+      'default': e
+    };
+  }
+
+  var extractDomain__default = /*#__PURE__*/_interopDefaultLegacy(extractDomain);
 
   var isObject = function isObject(item) {
     return item && _typeof(item) === "object" && !Array.isArray(item);
@@ -102,6 +110,32 @@ var edjsParser = function () {
         return "<figure class=\"".concat(figureClass, "\"><img class=\"").concat(imgClass, " ").concat(imageConditions, "\" src=\"").concat(imageSrc, "\" alt=\"").concat(data.caption, "\"><figcaption class=\"").concat(figCapClass, "\">").concat(data.caption, "</figcaption></figure>");
       }
     },
+    simpleImage: function simpleImage(data, config) {
+      var imageConditions = "".concat(data.stretched ? "img-fullwidth" : "", " ").concat(data.withBorder ? "img-border" : "", " ").concat(data.withBackground ? "img-bg" : "");
+      var imgClass = config.simpleImage.imgClass || "";
+      var imageSrc;
+
+      if (data.url) {
+        // simple-image was used and the image probably is not uploaded to this server
+        // therefore, we use the absolute path provided in data.url
+        // so, config.image.path property is useless in this case!
+        imageSrc = data.url;
+      } else if (config.simpleImage.path === "absolute") {
+        imageSrc = data.file.url;
+      } else {
+        imageSrc = config.simpleImage.path.replace(/<(.+)>/, function (match, p1) {
+          return data.file[p1];
+        });
+      }
+
+      if (config.image.use === "img") {
+        return "<img class=\"".concat(imageConditions, " ").concat(imgClass, "\" src=\"").concat(imageSrc, "\" alt=\"").concat(data.caption, "\">");
+      } else if (config.simpleImage.use === "figure") {
+        var figureClass = config.simpleImage.figureClass || "";
+        var figCapClass = config.simpleImage.figCapClass || "";
+        return "<figure class=\"".concat(figureClass, "\"><img class=\"").concat(imgClass, " ").concat(imageConditions, "\" src=\"").concat(imageSrc, "\" alt=\"").concat(data.caption, "\"><figcaption class=\"").concat(figCapClass, "\">").concat(data.caption, "</figcaption></figure>");
+      }
+    },
     code: function code(data, config) {
       var markup = sanitizeHtml(data.code);
       return "<pre><code class=\"".concat(config.code.codeBlockClass, "\">").concat(markup, "</code></pre>");
@@ -130,9 +164,31 @@ var edjsParser = function () {
           return data[p1];
         });
       }
+    },
+    linkTool: function linkTool(data, config) {
+      var _data$meta, _data$meta2, _data$meta3, _data$meta3$title, _data$meta4, _data$meta4$descripti;
+
+      var cfg = config.linkTool; // configurations for linkTool
+      // Display meta tags if available (title, description)
+
+      var imageLink = (data === null || data === void 0 ? void 0 : (_data$meta = data.meta) === null || _data$meta === void 0 ? void 0 : _data$meta.image.URL) || (data === null || data === void 0 ? void 0 : (_data$meta2 = data.meta) === null || _data$meta2 === void 0 ? void 0 : _data$meta2.image.url) || '';
+      var imageDiv = '';
+
+      if ((imageLink === null || imageLink === void 0 ? void 0 : imageLink.length) > 0) {
+        imageDiv = "<div class=\"".concat(cfg.imgWrapperClass, "\">\n        <div class=\"").concat(cfg.imgBgClass, "\" style=\"background-image: url(").concat(imageLink, ")\"></div>\n      </div>");
+      }
+
+      return "\n      <a class=\" ".concat(cfg.linkCardClass, "\" href=\"").concat(data.link, "\" target=\"_blank\">\n        <div class=").concat(cfg.linkToolMainClass, ">\n          <div>\n            ").concat((data === null || data === void 0 ? void 0 : (_data$meta3 = data.meta) === null || _data$meta3 === void 0 ? void 0 : (_data$meta3$title = _data$meta3.title) === null || _data$meta3$title === void 0 ? void 0 : _data$meta3$title.length) > 0 ? '<p class=' + cfg.titleClass + '>' + data.meta.title + '</p>' : '', "\n            ").concat((data === null || data === void 0 ? void 0 : (_data$meta4 = data.meta) === null || _data$meta4 === void 0 ? void 0 : (_data$meta4$descripti = _data$meta4.description) === null || _data$meta4$descripti === void 0 ? void 0 : _data$meta4$descripti.length) > 0 ? '<p class=' + cfg.descriptionClass + '>' + data.meta.description + '</p>' : '', "\n            <p class=\"").concat(cfg.linkClass, "\">").concat(extractDomain__default["default"](data.link), "</p>\n          </div>\n        </div>\n        ").concat(imageDiv, "\n      </a>");
     }
   };
   var defaultConfig = {
+    simpleImage: {
+      use: "figure",
+      imgClass: "img-simple",
+      figureClass: "fig-img-simple",
+      figCapClass: "fig-cap-simple",
+      path: "absolute"
+    },
     image: {
       use: "figure",
       // figure or img (figcaption will be used for caption of figure)
@@ -155,6 +211,15 @@ var edjsParser = function () {
     quote: {
       applyAlignment: false // if set to true blockquote element will have text-align css property set
 
+    },
+    linkTool: {
+      linkCardClass: 'link-tool-card',
+      linkToolMainClass: 'link-tool-main',
+      titleClass: 'tl-title',
+      descriptionClass: 'tl-description',
+      linkClass: 'tl-link',
+      imgWrapperClass: 'link-image-wrapper',
+      imgBgClass: 'link-img-bg'
     }
   };
 
@@ -206,4 +271,4 @@ var edjsParser = function () {
   }();
 
   return edjsParser;
-}();
+}(extractDomain);
