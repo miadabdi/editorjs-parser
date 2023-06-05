@@ -2,7 +2,7 @@ import { sanitizeHtml } from "./utitlities";
 
 export default {
     paragraph: function(data, config) {
-        return `<p class="${config.paragraph.pClass}"> ${data.text} </p>`;
+        return `<p class="${config.paragraph.pClass}">${data.text}</p>`;
     },
 
     header: function(data) {
