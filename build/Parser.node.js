@@ -120,6 +120,7 @@ var defaultParsers = {
   },
 
   embed: function (data, config) {
+    data = { ...data }; // work on a copy — never mutate the caller's block data
     if (config.embed.useProvidedLength) {
       data.length = `width="${data.width}" height="${data.height}"`;
     } else {
@@ -168,8 +169,8 @@ var defaultConfig = {
 class edjsParser {
     constructor(config = {}, customs = {}, embeds = {}) {
         this.config = mergeDeep(defaultConfig, config);
-        this.config.embedMarkups = Object.assign(embedMarkups, embeds);
-        this.parsers = Object.assign(defaultParsers, customs);
+        this.config.embedMarkups = Object.assign({}, embedMarkups, embeds);
+        this.parsers = Object.assign({}, defaultParsers, customs);
     }
 
     parse(EditorJsObject) {

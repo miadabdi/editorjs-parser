@@ -6,8 +6,8 @@ editorjs-parser is a NPM package for parsing the output object of [EditorJs](htt
 
 ### CDN
 
-- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.node.min.js (Node only)
-- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.browser.min.js (Browser only)
+- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.node.js (Node only)
+- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.browser.js (Browser only)
 
 ### NPM
 
@@ -209,6 +209,18 @@ const config = {
 
 const parser = new edjsParser(config);
 ```
+
+# Testing
+
+```bash
+npm install
+npm test        # vitest suite — asserts parser output against the test suites in test/
+npm run build   # rebuild the bundles in build/
+npm run smoke   # console.log the full parse of test/testData.json through the built bundle
+```
+
+The vitest suite pins existing parser output byte-for-byte, so any change to
+rendered markup is caught. See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 # Contributing
 

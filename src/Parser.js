@@ -5,8 +5,8 @@ import { mergeDeep, embedMarkups } from "./utitlities";
 export default class edjsParser {
     constructor(config = {}, customs = {}, embeds = {}) {
         this.config = mergeDeep(defaultConfig, config);
-        this.config.embedMarkups = Object.assign(embedMarkups, embeds);
-        this.parsers = Object.assign(defaultParsers, customs);
+        this.config.embedMarkups = Object.assign({}, embedMarkups, embeds);
+        this.parsers = Object.assign({}, defaultParsers, customs);
     }
 
     parse(EditorJsObject) {

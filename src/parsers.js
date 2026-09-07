@@ -77,6 +77,7 @@ export default {
   },
 
   embed: function (data, config) {
+    data = { ...data }; // work on a copy — never mutate the caller's block data
     if (config.embed.useProvidedLength) {
       data.length = `width="${data.width}" height="${data.height}"`;
     } else {
