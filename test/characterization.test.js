@@ -64,13 +64,13 @@ describe("list (legacy string items)", () => {
         ).toBe("<ul><li>x</li></ul>");
     });
 
-    it("stringifies object items (documented broken path — flips in v1.7.0)", () => {
+    it("renders list v2 object items as nested content (flipped in v1.7.0 — was [object Object])", () => {
         expect(
             p.parseBlock({
                 type: "list",
                 data: { style: "unordered", items: [{ content: "a", items: [] }, { content: "b", items: [] }] },
             })
-        ).toBe("<ul><li>[object Object]</li><li>[object Object]</li></ul>");
+        ).toBe("<ul><li>a</li><li>b</li></ul>");
     });
 });
 

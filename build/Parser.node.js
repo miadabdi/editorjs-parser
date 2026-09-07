@@ -43,6 +43,36 @@ const embedMarkups = {
     defaultMarkup: `<div class="embed"><iframe src="<%data.embed%>" <%data.length%> class="embed-unknown" allowfullscreen="true" frameborder="0" ></iframe></div>`,
 };
 
+function renderNestedList(items, tag) {
+    const lis = items
+        .map((item) => {
+            const children =
+                item.items && item.items.length
+                    ? renderNestedList(item.items, tag)
+                    : "";
+            return `<li>${item.content}${children}</li>`;
+        })
+        .join("");
+    return `<${tag}>${lis}</${tag}>`;
+}
+
+function renderNestedChecklist(items) {
+    const divs = items
+        .map((item) => {
+            const checked =
+                item.meta && item.meta.checked
+                    ? " cdx-checklist__item--checked"
+                    : "";
+            const children =
+                item.items && item.items.length
+                    ? renderNestedChecklist(item.items)
+                    : "";
+            return `<div class="cdx-checklist__item${checked}">${item.content}${children}</div>`;
+        })
+        .join("");
+    return `<div class="cdx-checklist">${divs}</div>`;
+}
+
 var defaultParsers = {
     paragraph: function(data, config) {
         return `<p class="${config.paragraph.pClass}"> ${data.text} </p>`;
@@ -53,12 +83,23 @@ var defaultParsers = {
     },
 
     list: function(data) {
-        const type = data.style === "ordered" ? "ol" : "ul";
-        const items = data.items.reduce(
-            (acc, item) => acc + `<li>${item}</li>`,
-            ""
-        );
-        return `<${type}>${items}</${type}>`;
+        const items = data.items || [];
+
+        // legacy format ({style, items: string[]}) — output must stay byte-identical
+        if (typeof items[0] === "string" || items.length === 0) {
+            const type = data.style === "ordered" ? "ol" : "ul";
+            const legacyItems = items.reduce(
+                (acc, item) => acc + `<li>${item}</li>`,
+                ""
+            );
+            return `<${type}>${legacyItems}</${type}>`;
+        }
+
+        // @editorjs/list v2 ({style, items: [{content, meta, items}]})
+        if (data.style === "checklist") {
+            return renderNestedChecklist(items);
+        }
+        return renderNestedList(items, data.style === "ordered" ? "ol" : "ul");
     },
 
     quote: function(data, config) {

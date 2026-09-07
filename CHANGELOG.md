@@ -4,6 +4,21 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] — 2026-09-07
+
+### Added
+- Support for the @editorjs/list **v2 save format** (`items:
+  [{content, meta, items}]`) with recursive nesting — child lists render
+  inside their parent `<li>`. Previously nested items rendered as literal
+  `[object Object]`.
+- Support for `style: "checklist"` lists — renders the same `cdx-checklist`
+  markup as the standalone Checklist tool, with `--checked` modifiers taken
+  from each item's `meta.checked`.
+
+### Changed
+- List blocks in the legacy flat format (`items: string[]`) render exactly as
+  before; only the previously broken nested inputs changed output.
+
 ## [1.6.0] — 2026-09-07
 
 ### Added
@@ -92,6 +107,7 @@ Fixes.
 
 Early feature release.
 
+[1.7.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.7.0
 [1.6.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.6.0
 [1.5.4]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.5.4
 [1.5.3]: https://github.com/miadabdi/editorjs-parser/compare/v1.5.2...1.5.3

@@ -49,6 +49,24 @@ var edjsParser = function () {
     codepen: "<div class=\"embed\"><iframe <%data.length%> scrolling=\"no\" src=\"<%data.embed%>\" frameborder=\"no\" loading=\"lazy\" allowtransparency=\"true\" allowfullscreen=\"true\"></iframe></div>",
     defaultMarkup: "<div class=\"embed\"><iframe src=\"<%data.embed%>\" <%data.length%> class=\"embed-unknown\" allowfullscreen=\"true\" frameborder=\"0\" ></iframe></div>"
   };
+
+  function renderNestedList(items, tag) {
+    var lis = items.map(function (item) {
+      var children = item.items && item.items.length ? renderNestedList(item.items, tag) : "";
+      return "<li>".concat(item.content).concat(children, "</li>");
+    }).join("");
+    return "<".concat(tag, ">").concat(lis, "</").concat(tag, ">");
+  }
+
+  function renderNestedChecklist(items) {
+    var divs = items.map(function (item) {
+      var checked = item.meta && item.meta.checked ? " cdx-checklist__item--checked" : "";
+      var children = item.items && item.items.length ? renderNestedChecklist(item.items) : "";
+      return "<div class=\"cdx-checklist__item".concat(checked, "\">").concat(item.content).concat(children, "</div>");
+    }).join("");
+    return "<div class=\"cdx-checklist\">".concat(divs, "</div>");
+  }
+
   var defaultParsers = {
     paragraph: function paragraph(data, config) {
       return "<p class=\"".concat(config.paragraph.pClass, "\"> ").concat(data.text, " </p>");
@@ -57,11 +75,22 @@ var edjsParser = function () {
       return "<h".concat(data.level, ">").concat(data.text, "</h").concat(data.level, ">");
     },
     list: function list(data) {
-      var type = data.style === "ordered" ? "ol" : "ul";
-      var items = data.items.reduce(function (acc, item) {
-        return acc + "<li>".concat(item, "</li>");
-      }, "");
-      return "<".concat(type, ">").concat(items, "</").concat(type, ">");
+      var items = data.items || []; // legacy format ({style, items: string[]}) — output must stay byte-identical
+
+      if (typeof items[0] === "string" || items.length === 0) {
+        var type = data.style === "ordered" ? "ol" : "ul";
+        var legacyItems = items.reduce(function (acc, item) {
+          return acc + "<li>".concat(item, "</li>");
+        }, "");
+        return "<".concat(type, ">").concat(legacyItems, "</").concat(type, ">");
+      } // @editorjs/list v2 ({style, items: [{content, meta, items}]})
+
+
+      if (data.style === "checklist") {
+        return renderNestedChecklist(items);
+      }
+
+      return renderNestedList(items, data.style === "ordered" ? "ol" : "ul");
     },
     quote: function quote(data, config) {
       var alignment = "";

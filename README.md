@@ -59,7 +59,7 @@ const markup = parser.parseBlock(block);
 - Delimiter
 - Code
 - Quote
-- List
+- List (legacy flat format, and the @editorjs/list v2 format with recursive nesting and checklist style)
 - Embed
 - Image
 - Simple-image
