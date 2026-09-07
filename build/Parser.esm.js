@@ -113,6 +113,45 @@ var defaultParsers = {
   delimiter: function delimiter(data) {
     return "<br />";
   },
+  warning: function warning(data) {
+    return "<div class=\"cdx-warning\"><div class=\"cdx-warning__title\">".concat(data.title, "</div><div class=\"cdx-warning__message\">").concat(data.message, "</div></div>");
+  },
+  checklist: function checklist(data) {
+    var items = data.items.reduce(function (acc, item) {
+      return acc + "<div class=\"cdx-checklist__item".concat(item.checked ? " cdx-checklist__item--checked" : "", "\">").concat(item.text, "</div>");
+    }, "");
+    return "<div class=\"cdx-checklist\">".concat(items, "</div>");
+  },
+  linkTool: function linkTool(data) {
+    var meta = data.meta || {};
+    var image = meta.image && meta.image.url ? "<div class=\"link-tool__image\" style=\"background-image: url('".concat(meta.image.url, "')\"></div>") : "";
+    var title = meta.title ? "<div class=\"link-tool__title\">".concat(meta.title, "</div>") : "";
+    var description = meta.description ? "<p class=\"link-tool__description\">".concat(meta.description, "</p>") : "";
+    var domain = data.link;
+
+    try {
+      domain = new URL(data.link).hostname;
+    } catch (err) {// keep the raw link as the anchor text
+    }
+
+    return "<a class=\"link-tool__content link-tool__content--rendered\" href=\"".concat(data.link, "\" target=\"_blank\" rel=\"nofollow noindex noreferrer\">").concat(image).concat(title).concat(description, "<span class=\"link-tool__anchor\">").concat(domain, "</span></a>");
+  },
+  attaches: function attaches(data) {
+    var file = data.file || {};
+    var size = "";
+
+    if (file.size) {
+      var isMiB = Math.log10(+file.size) >= 6;
+      var value = isMiB ? file.size / Math.pow(2, 20) : file.size / Math.pow(2, 10);
+      size = "<span class=\"cdx-attaches__size\">".concat(value.toFixed(1), " ").concat(isMiB ? "MiB" : "KiB", "</span>");
+    }
+
+    var fileIcon = "<div class=\"cdx-attaches__file-icon\"><div class=\"cdx-attaches__file-icon-background\">".concat(file.extension ? "<div class=\"cdx-attaches__file-icon-label\">".concat(file.extension, "</div>") : "", "</div></div>");
+    return "<div class=\"cdx-attaches cdx-attaches--with-file\"><a class=\"cdx-attaches__download-button\" href=\"".concat(file.url, "\" target=\"_blank\"></a><div class=\"cdx-attaches__file-info\">").concat(fileIcon, "<div class=\"cdx-attaches__title\">").concat(data.title, "</div>").concat(size, "</div></div>");
+  },
+  personality: function personality(data) {
+    return "<div class=\"cdx-personality\"><div class=\"cdx-personality__photo\" style=\"background-image: url('".concat(data.photo, "');\"></div><a class=\"cdx-personality__name\" href=\"").concat(data.link, "\">").concat(data.name, "</a><div class=\"cdx-personality__description\">").concat(data.description, "</div></div>");
+  },
   embed: function embed(data, config) {
     data = _objectSpread({}, data); // work on a copy — never mutate the caller's block data
 

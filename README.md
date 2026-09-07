@@ -63,8 +63,24 @@ const markup = parser.parseBlock(block);
 - Embed
 - Image
 - Simple-image
+- Checklist
+- Warning
+- Link tool
+- Attaches
+- Personality
 
 **NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor insatnce, but this parser supports both of them and you can use any of them that fulfills your needs.
+
+## Markup of new blocks (1.6.0)
+
+Blocks added in 1.6.0 render with the official editor.js tools' own CSS class
+names, so existing editor.js styles apply to parsed output too:
+
+- **Warning** — `<div class="cdx-warning"><div class="cdx-warning__title">…</div><div class="cdx-warning__message">…</div></div>`
+- **Checklist** — `<div class="cdx-checklist"><div class="cdx-checklist__item[ cdx-checklist__item--checked]">…</div>…</div>`
+- **Link tool** — `<a class="link-tool__content link-tool__content--rendered" href="…" target="_blank" rel="nofollow noindex noreferrer">` with optional `link-tool__image` (background image), `link-tool__title`, `link-tool__description` and a `link-tool__anchor` span holding the hostname
+- **Attaches** — `<div class="cdx-attaches cdx-attaches--with-file">` with a `cdx-attaches__download-button` link, `cdx-attaches__file-icon(-background/-label)`, `cdx-attaches__title` and a human-readable `cdx-attaches__size` (KiB/MiB)
+- **Personality** — `<div class="cdx-personality">` with `cdx-personality__photo` (background image), `cdx-personality__name` (linked) and `cdx-personality__description`
 
 ## Custom or overriding parser methods
 

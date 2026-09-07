@@ -119,6 +119,57 @@ var defaultParsers = {
     return "<br />";
   },
 
+  warning: function (data) {
+    return `<div class="cdx-warning"><div class="cdx-warning__title">${data.title}</div><div class="cdx-warning__message">${data.message}</div></div>`;
+  },
+
+  checklist: function (data) {
+    const items = data.items.reduce(
+      (acc, item) =>
+        acc +
+        `<div class="cdx-checklist__item${item.checked ? " cdx-checklist__item--checked" : ""}">${item.text}</div>`,
+      ""
+    );
+    return `<div class="cdx-checklist">${items}</div>`;
+  },
+
+  linkTool: function (data) {
+    const meta = data.meta || {};
+    const image =
+      meta.image && meta.image.url
+        ? `<div class="link-tool__image" style="background-image: url('${meta.image.url}')"></div>`
+        : "";
+    const title = meta.title ? `<div class="link-tool__title">${meta.title}</div>` : "";
+    const description = meta.description
+      ? `<p class="link-tool__description">${meta.description}</p>`
+      : "";
+    let domain = data.link;
+    try {
+      domain = new URL(data.link).hostname;
+    } catch (err) {
+      // keep the raw link as the anchor text
+    }
+    return `<a class="link-tool__content link-tool__content--rendered" href="${data.link}" target="_blank" rel="nofollow noindex noreferrer">${image}${title}${description}<span class="link-tool__anchor">${domain}</span></a>`;
+  },
+
+  attaches: function (data) {
+    const file = data.file || {};
+    let size = "";
+    if (file.size) {
+      const isMiB = Math.log10(+file.size) >= 6;
+      const value = isMiB ? file.size / 2 ** 20 : file.size / 2 ** 10;
+      size = `<span class="cdx-attaches__size">${value.toFixed(1)} ${isMiB ? "MiB" : "KiB"}</span>`;
+    }
+    const fileIcon = `<div class="cdx-attaches__file-icon"><div class="cdx-attaches__file-icon-background">${
+      file.extension ? `<div class="cdx-attaches__file-icon-label">${file.extension}</div>` : ""
+    }</div></div>`;
+    return `<div class="cdx-attaches cdx-attaches--with-file"><a class="cdx-attaches__download-button" href="${file.url}" target="_blank"></a><div class="cdx-attaches__file-info">${fileIcon}<div class="cdx-attaches__title">${data.title}</div>${size}</div></div>`;
+  },
+
+  personality: function (data) {
+    return `<div class="cdx-personality"><div class="cdx-personality__photo" style="background-image: url('${data.photo}');"></div><a class="cdx-personality__name" href="${data.link}">${data.name}</a><div class="cdx-personality__description">${data.description}</div></div>`;
+  },
+
   embed: function (data, config) {
     data = { ...data }; // work on a copy — never mutate the caller's block data
     if (config.embed.useProvidedLength) {

@@ -4,6 +4,22 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] — 2026-09-07
+
+### Added
+- Support for the **Warning** tool (`warning`) — renders `cdx-warning` markup.
+- Support for the **Checklist** tool (`checklist`) — renders `cdx-checklist`
+  markup with `--checked` modifiers.
+- Support for the **Link tool** (`linkTool`) — renders the tool's card markup
+  (`link-tool__*`) with optional image, title, description and hostname anchor.
+- Support for the **Attaches** tool (`attaches`) — renders the download card
+  (`cdx-attaches__*`) with extension label and human-readable file size.
+- Support for the **Personality** tool (`personality`) — renders photo,
+  linked name and description (`cdx-personality__*`).
+
+All new markup uses the official editor.js tools' own CSS classes, so
+editor.js styles apply to parsed output as-is.
+
 ## [1.5.4] — 2026-09-07
 
 ### Added
@@ -76,6 +92,7 @@ Fixes.
 
 Early feature release.
 
+[1.6.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.6.0
 [1.5.4]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.5.4
 [1.5.3]: https://github.com/miadabdi/editorjs-parser/compare/v1.5.2...1.5.3
 [1.5.2]: https://github.com/miadabdi/editorjs-parser/compare/v1.5.1...1.5.2
