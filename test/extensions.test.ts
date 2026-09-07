@@ -30,7 +30,7 @@ describe("custom parsers (2nd constructor arg)", () => {
         const p = new edjsParser(undefined, { fakeTool: () => { throw new Error("boom"); } });
         const result = p.parseBlock({ type: "fakeTool", data: {} });
         expect(result).toBeInstanceOf(Error);
-        expect(result.message).toBe("boom");
+        expect((result as Error).message).toBe("boom");
     });
 });
 

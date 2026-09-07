@@ -37,7 +37,7 @@ describe("instance isolation (constructor must not mutate module defaults)", () 
         const fresh = new edjsParser();
         const result = fresh.parseBlock({ type: "fakeLeak", data: {} });
         expect(result).toBeInstanceOf(Error);
-        expect(result.message).toBe("fakeLeak is not supported! Define your own custom function.");
+        expect((result as Error).message).toBe("fakeLeak is not supported! Define your own custom function.");
     });
 });
 

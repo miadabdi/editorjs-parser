@@ -257,7 +257,7 @@ describe("parse() mechanics", () => {
     it("returns an Error from parseBlock for unknown types", () => {
         const result = p.parseBlock({ type: "fakeTool", data: {} });
         expect(result).toBeInstanceOf(Error);
-        expect(result.message).toBe("fakeTool is not supported! Define your own custom function.");
+        expect((result as Error).message).toBe("fakeTool is not supported! Define your own custom function.");
     });
 });
 
