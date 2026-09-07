@@ -6,8 +6,8 @@ editorjs-parser is a NPM package for parsing the output object of [EditorJs](htt
 
 ### CDN
 
-- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.node.js (Node only)
-- https://cdn.jsdelivr.net/npm/editorjs-parser@1/build/Parser.browser.js (Browser only)
+- https://cdn.jsdelivr.net/npm/editorjs-parser@2/dist/index.cjs (Node only)
+- https://cdn.jsdelivr.net/npm/editorjs-parser@2/dist/index.global.js (Browser only)
 
 ### NPM
 

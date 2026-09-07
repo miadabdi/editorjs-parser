@@ -1,6 +1,5 @@
 import edjsParser from "./Parser";
 
-export { edjsParser };
 export type {
     CustomEmbeds,
     CustomParsers,
