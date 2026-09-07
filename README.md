@@ -17,6 +17,19 @@ Use the package manager [npm](https://www.npmjs.com/) to install editorjs-parser
 npm install --save editorjs-parser
 ```
 
+## TypeScript
+
+The package is written in TypeScript and ships its own type declarations — no
+`@types` install needed. Public types: `EditorJSOutput`, `EditorJSBlock`,
+`ParserConfig`, `DeepPartial`, `CustomParsers`, `CustomEmbeds`, `ParserFunction`.
+
+```typescript
+import edjsParser, { type EditorJSOutput } from "editorjs-parser";
+
+const parser = new edjsParser();
+const html: string = parser.parse(output satisfies EditorJSOutput);
+```
+
 # Usage
 
 To use the package in browser, import Browser verison through CDN to your HTML file and just call `edjsParser` class:

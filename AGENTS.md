@@ -18,18 +18,21 @@ parser.parseBlock({ type, data }); // → HTML string, or Error if unsupported
 
 ## Layout
 
-- `src/Parser.js` — `edjsParser` class: config merge, parser dispatch, error handling.
-- `src/parsers.js` — one function per block type, signature `(data, config) => string`. Add new block types here.
-- `src/config.js` — default config.
-- `src/utitlities.js` — `mergeDeep`, `sanitizeHtml`, built-in embed markups. (Filename typo is known and kept.)
-- `build/` — rollup dist artifacts (CJS `Parser.node.js` is the npm `main`, ESM, browser IIFE). **Committed to the repo.**
-- `test/` — vitest suites, `test/test.js` (legacy smoke script), `testData.json` fixture.
+- `src/Parser.ts` — `edjsParser` class: config merge, parser dispatch, error handling.
+- `src/parsers.ts` — one function per block type, signature `(data, config) => string`. Add new block types here.
+- `src/config.ts` — default config.
+- `src/utilities.ts` — `mergeDeep`, `sanitizeHtml`, built-in embed markups.
+- `src/types.ts` — public TypeScript types, re-exported from `src/index.ts` (the package entry).
+- `dist/` — tsup build artifacts (`index.js` ESM, `index.cjs` CommonJS, `index.global.js` browser IIFE exposing global `edjsParser`, `index.d.ts` types). **Committed to the repo.**
+- `test/` — vitest suites (TypeScript), `test/smoke.cjs` (bundle smoke script), `testData.json` fixture.
+- `tsconfig.json` / `tsup.config.ts` — strict TS, three-format build.
 
 ## Commands
 
 - `npm test` — vitest run. Tests import `src/` directly, never the build, so they can't go stale.
-- `npm run build` — rollup → rebuilds all three bundles. **Run and commit `build/` after any src change** (repo convention; the build is tracked).
-- `npm run smoke` — `node test/test.js`; requires a fresh build; console-logs the full parse of `testData.json`. Eyeball check of the shipped bundle only — real assertions live in vitest.
+- `npm run build` — tsup → rebuilds all `dist/` artifacts. **Run and commit `dist/` after any src change** (repo convention; the build is tracked).
+- `npm run smoke` — `node test/smoke.cjs`; requires a fresh build; console-logs the full parse of `testData.json`. Eyeball check of the shipped bundle only — real assertions live in vitest.
+- `npx tsc --noEmit` — typecheck; part of the gates before any commit.
 
 ## Conventions
 
@@ -39,7 +42,8 @@ parser.parseBlock({ type, data }); // → HTML string, or Error if unsupported
 - **No HTML escaping except the `code` parser.** editor.js inline markup (`<b>`, `<mark>`, `<a>`…) is trusted input and passes through by design.
 - Parsers must never mutate their `data` argument; the constructor must never mutate module-level defaults (other instances share the process).
 - Unknown block type → `Error` from `parseBlock`, `""` from `parse`. Don't change this contract.
-- The package is CommonJS (`main: build/Parser.node.js`). Do **not** add `"type": "module"`. Vitest needs no config file.
+- The package is ESM-first (`"type": "module"`, exports map) with `index.cjs` for `require()` and an IIFE for browsers. New CommonJS files need the `.cjs` extension. The CJS/IIFE tsup footers unwrap the default export so `new (require(...))()` keeps working — don't remove them.
+- Vitest needs no config file. Pin `typescript@^5` — tsup's declaration generation does not support TypeScript 7 yet.
 
 ## Quirks that are features (do not "fix" silently)
 

@@ -4,6 +4,27 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] — 2026-09-08
+
+### Changed
+- **The library is now written in TypeScript** (`strict` mode) and ships its
+  own type declarations — `EditorJSOutput`, `EditorJSBlock`, `ParserConfig`,
+  `CustomParsers`, `CustomEmbeds`, `ParserFunction` are exported types.
+- Build moved from rollup+babel to [tsup](https://tsup.egoist.dev); artifacts
+  now live in `dist/` (`index.js` ESM, `index.cjs` CommonJS, `index.global.js`
+  browser IIFE global `edjsParser`, `index.d.ts` types).
+- Package is ESM-first (`"type": "module"`) with a modern `exports` map.
+
+### Fixed
+- `src/utitlities.js` filename typo — now `src/utilities.ts` (internal file).
+
+### Breaking
+- Deep imports such as `require("editorjs-parser/build/Parser.node")` no
+  longer exist — import the package root (`require("editorjs-parser")` /
+  `import edjsParser from "editorjs-parser"`), which works unchanged.
+- Runtime behavior of the parser is **unchanged** — all pre-2.0 output
+  assertions pass byte-for-byte.
+
 ## [1.8.0] — 2026-09-07
 
 ### Added
@@ -114,6 +135,7 @@ Fixes.
 
 Early feature release.
 
+[2.0.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v2.0.0
 [1.8.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.8.0
 [1.7.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.7.0
 [1.6.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.6.0

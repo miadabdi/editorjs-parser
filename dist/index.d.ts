@@ -50,4 +50,4 @@ declare class edjsParser {
     parseBlock(block: EditorJSBlock): string | Error;
 }
 
-export { type CustomEmbeds, type CustomParsers, type EditorJSBlock, type EditorJSOutput, type ParserConfig, type ParserFunction, edjsParser as default };
+export { type CustomEmbeds, type CustomParsers, type DeepPartial, type EditorJSBlock, type EditorJSOutput, type ParserConfig, type ParserFunction, edjsParser as default };

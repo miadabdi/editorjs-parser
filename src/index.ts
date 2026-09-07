@@ -3,6 +3,7 @@ import edjsParser from "./Parser";
 export type {
     CustomEmbeds,
     CustomParsers,
+    DeepPartial,
     EditorJSBlock,
     EditorJSOutput,
     ParserConfig,
