@@ -68,13 +68,16 @@ export default {
     },
 
     table: function(data) {
-            const rows = data.content.map((row) => {
-                        return `<tr>${row.reduce(
-        (acc, cell) => acc + `<td>${cell}</td>`,
-        ""
-      )}</tr>`;
-    });
-    return `<table><tbody>${rows.join("")}</tbody></table>`;
+        const rowToTr = (row, tag) =>
+            `<tr>${row.reduce((acc, cell) => acc + `<${tag}>${cell}</${tag}>`, "")}</tr>`;
+        if (data.withHeadings && data.content.length) {
+            const [head, ...body] = data.content;
+            return `<table><thead>${rowToTr(head, "th")}</thead><tbody>${body
+                .map((row) => rowToTr(row, "td"))
+                .join("")}</tbody></table>`;
+        }
+        const rows = data.content.map((row) => rowToTr(row, "td"));
+        return `<table><tbody>${rows.join("")}</tbody></table>`;
   },
   image: function (data, config) {
     const imageConditions = `${data.stretched ? "img-fullwidth" : ""} ${

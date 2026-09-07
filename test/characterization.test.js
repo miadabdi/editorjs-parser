@@ -107,9 +107,9 @@ describe("table", () => {
         );
     });
 
-    it("ignores withHeadings (documented broken path — flips in v1.8.0)", () => {
+    it("renders withHeadings as a thead row (flipped in v1.8.0 — was ignored)", () => {
         expect(p.parseBlock({ type: "table", data: { content, withHeadings: true } })).toBe(
-            "<table><tbody><tr><td></td><td>Me</td><td>Me</td></tr><tr><td>You</td><td>Ugly</td><td>Big</td></tr></tbody></table>"
+            "<table><thead><tr><th></th><th>Me</th><th>Me</th></tr></thead><tbody><tr><td>You</td><td>Ugly</td><td>Big</td></tr></tbody></table>"
         );
     });
 });

@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] — 2026-09-07
+
+### Added
+- Table blocks with `withHeadings: true` now render their first row as a
+  `<thead>` row of `<th>` cells (previously the flag was ignored and headings
+  rendered as plain `<td>`). Tables without headings render exactly as before.
+
 ## [1.7.0] — 2026-09-07
 
 ### Added
@@ -107,6 +114,7 @@ Fixes.
 
 Early feature release.
 
+[1.8.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.8.0
 [1.7.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.7.0
 [1.6.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.6.0
 [1.5.4]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.5.4

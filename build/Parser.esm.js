@@ -8,6 +8,18 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
+function _toArray(arr) { return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -99,10 +111,24 @@ var defaultParsers = {
     return "<blockquote ".concat(alignment, "><p>").concat(data.text, "</p><cite>").concat(data.caption, "</cite></blockquote>");
   },
   table: function table(data) {
-    var rows = data.content.map(function (row) {
+    var rowToTr = function rowToTr(row, tag) {
       return "<tr>".concat(row.reduce(function (acc, cell) {
-        return acc + "<td>".concat(cell, "</td>");
+        return acc + "<".concat(tag, ">").concat(cell, "</").concat(tag, ">");
       }, ""), "</tr>");
+    };
+
+    if (data.withHeadings && data.content.length) {
+      var _data$content = _toArray(data.content),
+          head = _data$content[0],
+          body = _data$content.slice(1);
+
+      return "<table><thead>".concat(rowToTr(head, "th"), "</thead><tbody>").concat(body.map(function (row) {
+        return rowToTr(row, "td");
+      }).join(""), "</tbody></table>");
+    }
+
+    var rows = data.content.map(function (row) {
+      return rowToTr(row, "td");
     });
     return "<table><tbody>".concat(rows.join(""), "</tbody></table>");
   },

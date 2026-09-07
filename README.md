@@ -54,7 +54,7 @@ const markup = parser.parseBlock(block);
 
 - Paragraph
 - Header
-- Table
+- Table (optional first-row headings via `withHeadings` → `<thead>`/`<th>`)
 - Raw
 - Delimiter
 - Code
