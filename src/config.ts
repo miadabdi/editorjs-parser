@@ -1,4 +1,6 @@
-export default {
+import type { ParserConfig } from "./types";
+
+const defaultConfig: Omit<ParserConfig, "embedMarkups"> = {
     image: {
         use: "figure", // figure or img (figcaption will be used for caption of figure)
         imgClass: "img",
@@ -22,3 +24,5 @@ export default {
         // if set to true blockquote element will have text-align css property set
     },
 };
+
+export default defaultConfig;

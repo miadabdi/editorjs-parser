@@ -8,7 +8,7 @@
  *   (b) the embed parser wrote data.length onto the caller's block object.
  */
 import { describe, it, expect } from "vitest";
-import edjsParser from "../src/Parser.js";
+import edjsParser from "../src/Parser";
 
 describe("instance isolation (constructor must not mutate module defaults)", () => {
     it("keeps other instances' parsers untouched", () => {

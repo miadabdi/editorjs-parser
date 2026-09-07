@@ -8,7 +8,7 @@
  * registry, so the pollution cannot leak into the other suites.
  */
 import { describe, it, expect } from "vitest";
-import edjsParser from "../src/Parser.js";
+import edjsParser from "../src/Parser";
 
 describe("custom parsers (2nd constructor arg)", () => {
     it("overrides an existing type for this instance", () => {

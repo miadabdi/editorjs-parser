@@ -5,7 +5,7 @@
  * the input document (regression net for the 1.5.4 embed bugfix).
  */
 import { describe, it, expect } from "vitest";
-import edjsParser from "../src/Parser.js";
+import edjsParser from "../src/Parser";
 import doc from "./testData.json";
 
 describe("full document", () => {

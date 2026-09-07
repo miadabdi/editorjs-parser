@@ -1,9 +1,12 @@
-export const isObject = function(item) {
-    return item && typeof item === "object" && !Array.isArray(item);
+export const isObject = function (item: unknown): item is Record<string, any> {
+    return !!item && typeof item === "object" && !Array.isArray(item);
 };
 
-export const mergeDeep = function(target, source) {
-    let output = Object.assign({}, target);
+export const mergeDeep = function (
+    target: Record<string, any>,
+    source: Record<string, any>
+): Record<string, any> {
+    const output: Record<string, any> = Object.assign({}, target);
     if (isObject(target) && isObject(source)) {
         Object.keys(source).forEach((key) => {
             if (isObject(source[key])) {
@@ -22,14 +25,14 @@ export const mergeDeep = function(target, source) {
     return output;
 };
 
-export const sanitizeHtml = function(markup) {
+export const sanitizeHtml = function (markup: string): string {
     markup = markup.replace(/&/g, "&amp;");
     markup = markup.replace(/</g, "&lt;");
     markup = markup.replace(/>/g, "&gt;");
     return markup;
 };
 
-export const embedMarkups = {
+export const embedMarkups: Record<string, string> = {
     youtube: `<div class="embed"><iframe class="embed-youtube" frameborder="0" src="<%data.embed%>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen <%data.length%>></iframe></div>`,
 
     twitter: `<blockquote class="twitter-tweet" class="embed-twitter" <%data.length%>><a href="<%data.source%>"></a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>`,

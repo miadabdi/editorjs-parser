@@ -6,7 +6,7 @@
  * 1.7.0 (headings render as plain td), the no-headings cases must pass.
  */
 import { describe, it, expect } from "vitest";
-import edjsParser from "../src/Parser.js";
+import edjsParser from "../src/Parser";
 
 const p = new edjsParser();
 

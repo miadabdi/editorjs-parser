@@ -7,7 +7,7 @@
  * against 1.5.4, then pass once src/parsers.js gains the five entries.
  */
 import { describe, it, expect } from "vitest";
-import edjsParser from "../src/Parser.js";
+import edjsParser from "../src/Parser";
 
 const p = new edjsParser();
 

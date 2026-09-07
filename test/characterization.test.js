@@ -8,7 +8,7 @@
  * and would leak into these tests.
  */
 import { describe, it, expect } from "vitest";
-import edjsParser from "../src/Parser.js";
+import edjsParser from "../src/Parser";
 
 const p = new edjsParser();
 
