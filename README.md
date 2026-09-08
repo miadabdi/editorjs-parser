@@ -32,7 +32,7 @@ const html: string = parser.parse(output satisfies EditorJSOutput);
 
 # Usage
 
-To use the package in browser, import Browser verison through CDN to your HTML file and just call `edjsParser` class:
+To use the package in browser, import Browser version through CDN to your HTML file and just call `edjsParser` class:
 
 ```javascript
 const parser = new edjsParser(config, customParsers, embedMarkup);
@@ -59,7 +59,7 @@ To parse one block, pass a complete block:
 const markup = parser.parseBlock(block);
 ```
 
-**NOTE:** HTML markup in code blocks are already sanitized and ready to be send to browser. You don't have to do anything.
+**NOTE:** HTML markup in code blocks are already sanitized and ready to be sent to browser. You don't have to do anything.
 
 **NOTE:** Code blocks are compatible with [highlight.js](https://github.com/highlightjs/highlight.js/)
 
@@ -179,7 +179,7 @@ const parser = new edjsParser(config);
 
 **NOTE:** Images will have class `img`.
 
-**NOTE:** If the image is streched, the parsed `img` tag will have `img-fullwidth` as class.
+**NOTE:** If the image is stretched, the parsed `img` tag will have `img-fullwidth` as class.
 
 **NOTE:** If image is set to have a border, the parsed `img` tag will have `img-border` as class.
 
@@ -189,7 +189,7 @@ You can style, according to these classes.
 
 ### Apply provided lengths (embeds)
 
-If you want the returned width and height of embeded element to be applied, set `useProvidedLength` option to true in config:
+If you want the returned width and height of embedded element to be applied, set `useProvidedLength` option to true in config:
 
 ```javascript
 const config = {
@@ -206,7 +206,7 @@ const parser = new edjsParser(config);
 If you want to render a custom markup for your embed service, pass it in an object in third argument. For example if you want your own markup to be rendered for Youtube video embed, you got to do this:
 
 ```javascript
-const parser = new edjsParser(undifined, undifined, {
+const parser = new edjsParser(undefined, undefined, {
   youtube: `Your markup in string`,
 });
 ```
@@ -218,14 +218,14 @@ const customEmbeds = {
   youtube: `<iframe src="<%data.embed%>" width="<%data.width%>"><%data.caption%></iframe>`,
 };
 
-const parser = new edjsParser(undifined, undifined, customEmbeds);
+const parser = new edjsParser(undefined, undefined, customEmbeds);
 ```
 
 **NOTE:** If you want to have [useProvidedLength](#apply-provided-lengths-embeds) functionality, use `<%data.length%>` instead of `<%data.width%>` and `<%data.height%>` in embed markups.
 
 `<%data.length%>` returns string like this: `width="300" height="500"`
 
-### Qoute Alignment (quotes)
+### Quote Alignment (quotes)
 
 If you need the returned alignment of blockquotes to be set, set `applyAlignment` to true in config:
 
