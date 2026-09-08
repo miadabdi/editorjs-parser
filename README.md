@@ -279,6 +279,35 @@ npm run smoke   # console.log the full parse of test/testData.json through the b
 The vitest suite pins existing parser output byte-for-byte, so any change to
 rendered markup is caught. See [CHANGELOG.md](CHANGELOG.md) for release history.
 
+# Security
+
+The parser **does not escape HTML by design** (except in `code` blocks) —
+editor.js inline markup (`<b>`, `<a>`, `<mark>`…) inside block text is trusted
+and passed through. Treat the editor.js JSON you feed it as trusted input: if
+the data can be tampered with (e.g. stored user content from an untrusted
+source), sanitize the *resulting HTML* at your render boundary with a
+server-side sanitizer.
+
+# Migrating
+
+- **1.x → 2.0** (TypeScript rewrite): deep imports such as
+  `require("editorjs-parser/build/Parser.node")` are gone — import the package
+  root instead (`require("editorjs-parser")` / `import edjsParser from
+  "editorjs-parser"`), which works unchanged. Bundles moved from `build/` to
+  `dist/`; type declarations now ship in the package.
+- **2.x → 3.0**: paragraphs no longer render with padding spaces
+  (`<p class="paragraph">text</p>`). Feeding parsed HTML back into the editor
+  no longer grows paragraphs. Want the old spacing back?
+  ```javascript
+  new edjsParser(undefined, {
+      paragraph: (data, config) => `<p class="${config.paragraph.pClass}"> ${data.text} </p>`,
+  });
+  ```
+- **3.0 → 3.1**: no breaking changes — block tunes, the `delimiter.tag`
+  config, and fixes for `alt="undefined"` and header-level clamping.
+
+Full history: [CHANGELOG.md](CHANGELOG.md).
+
 # Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate.
