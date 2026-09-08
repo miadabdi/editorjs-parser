@@ -38,7 +38,8 @@ parser.parseBlock({ type, data }); // → HTML string, or Error if unsupported
 
 - **Tests first.** `test/characterization.test.js` is the backward-compat contract: it pins current output **byte-identical**, quirks included. Any deliberate behavior change updates its assertion in the same commit.
 - **Releases:** grouped version bump + `CHANGELOG.md` entry + git tag + `npm publish`. Changelog entry per released capability.
-- **New parsers use the official editor.js tool's own CSS classes** (`cdx-*` BEM; the Link tool uses `link-tool__*`). Check the tool's repo under the `editor-js` GitHub org before inventing markup.
+- **New parsers use the official editor.js tool's own CSS classes** (`cdx-*` BEM; the Link tool uses `link-tool__*`). Check the tool's repo under the `editor-js` GitHub org before inventing markup. Exception: official tools that define **no** output markup (e.g. the footnotes tune) get our own BEM class (`cdx-footnotes`), documented in the README.
+- **Block tunes are applied generically in `parseBlock`** (not per-parser): `textVariant` wraps in the official `cdx-text-variant--<variant>` div, `footnotes` appends a `cdx-footnotes` list. New tunes go there.
 - **No HTML escaping except the `code` parser.** editor.js inline markup (`<b>`, `<mark>`, `<a>`…) is trusted input and passes through by design.
 - Parsers must never mutate their `data` argument; the constructor must never mutate module-level defaults (other instances share the process).
 - Unknown block type → `Error` from `parseBlock`, `""` from `parse`. Don't change this contract.

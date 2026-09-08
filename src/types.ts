@@ -16,6 +16,7 @@ export interface ParserConfig {
     code: { codeBlockClass: string };
     embed: { useProvidedLength: boolean };
     quote: { applyAlignment: boolean };
+    delimiter: { tag: "br" | "hr" };
     embedMarkups: Record<string, string>;
 }
 

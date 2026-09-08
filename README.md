@@ -81,6 +81,30 @@ const markup = parser.parseBlock(block);
 - Link tool
 - Attaches
 - Personality
+- Block tunes: **text variant** (`citation` / `call-out` / `details`) and **footnotes**
+
+## Block tunes (3.1.0)
+
+editor.js saves block tunes in `block.tunes` alongside `block.data`. Two
+official tunes are rendered:
+
+- **Text variant** (`@editorjs/text-variant-tune`) — the block's HTML is
+  wrapped exactly like the editor renders it:
+  `<div class="cdx-text-variant cdx-text-variant--citation">…</div>`
+  (same for `--call-out`, `--details`).
+- **Footnotes** (`@editorjs/footnotes-tune`) — the saved footnote texts
+  (matching the `<sup data-tune="footnotes">N</sup>` markers in the text) are
+  appended as a list after the block:
+  `<ol class="cdx-footnotes"><li class="cdx-footnotes__item">…</li></ol>`
+
+## Delimiter (3.1.0)
+
+By default the delimiter block renders the historical `<br />`. For a semantic
+horizontal rule instead:
+
+```javascript
+const parser = new edjsParser({ delimiter: { tag: "hr" } });
+```
 
 **NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor instance, but this parser supports both of them and you can use any of them that fulfills your needs.
 
@@ -157,6 +181,10 @@ This is the default configuration. You can override any of these properties by p
   quote: {
     applyAlignment: false,
     // if set to true blockquote element will have text-align css property set
+  },
+  delimiter: {
+    tag: "br",
+    // "hr" renders <hr /> instead of the default <br />
   },
 };
 ```

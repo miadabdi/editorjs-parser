@@ -45,7 +45,9 @@ const parsers: Record<string, ParserFunction> = {
     },
 
     header: function (data: { text: string; level: number }) {
-        return `<h${data.level}>${data.text}</h${data.level}>`;
+        // clamp to valid h1-h6 so a malformed level can never inject markup
+        const level = Math.min(6, Math.max(1, parseInt(String(data.level), 10) || 1));
+        return `<h${level}>${data.text}</h${level}>`;
     },
 
     list: function (data: {
@@ -130,12 +132,15 @@ const parsers: Record<string, ParserFunction> = {
         }
 
         if (config.image.use === "img") {
-            return `<img class="${imageConditions} ${imgClass}" src="${imageSrc}" alt="${data.caption}">`;
+            return `<img class="${imageConditions} ${imgClass}" src="${imageSrc}" alt="${data.caption || ""}">`;
         } else if (config.image.use === "figure") {
             const figureClass = config.image.figureClass || "";
             const figCapClass = config.image.figCapClass || "";
+            const figcaption = data.caption
+                ? `<figcaption class="${figCapClass}">${data.caption}</figcaption>`
+                : "";
 
-            return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${data.caption}"><figcaption class="${figCapClass}">${data.caption}</figcaption></figure>`;
+            return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${data.caption || ""}">${figcaption}</figure>`;
         }
         return undefined as unknown as string; // unreachable with valid config — preserves legacy "bad use → undefined" behavior
     },
@@ -149,8 +154,8 @@ const parsers: Record<string, ParserFunction> = {
         return data.html;
     },
 
-    delimiter: function () {
-        return "<br />";
+    delimiter: function (data: any, config: ParserConfig) {
+        return `<${config.delimiter.tag} />`;
     },
 
     warning: function (data: { title: string; message: string }) {

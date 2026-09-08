@@ -38,6 +38,18 @@ describe("header", () => {
         expect(p.parseBlock({ type: "header", data: { text: "Title", level: 1 } })).toBe("<h1>Title</h1>");
         expect(p.parseBlock({ type: "header", data: { text: "Deep", level: 6 } })).toBe("<h6>Deep</h6>");
     });
+
+    it("clamps out-of-range levels to h1-h6 (fixed in 3.1.0 — was unvalidated)", () => {
+        expect(p.parseBlock({ type: "header", data: { text: "Big", level: 9 } })).toBe("<h6>Big</h6>");
+        expect(p.parseBlock({ type: "header", data: { text: "Small", level: 0 } })).toBe("<h1>Small</h1>");
+    });
+
+    it("never lets a malformed level inject markup into the tag", () => {
+        expect(
+            p.parseBlock({ type: "header", data: { text: "x", level: "2><script>alert(1)</script>" as any } })
+        ).toBe("<h2>x</h2>");
+        expect(p.parseBlock({ type: "header", data: { text: "x", level: "nonsense" as any } })).toBe("<h1>x</h1>");
+    });
 });
 
 describe("list (legacy string items)", () => {
@@ -159,10 +171,17 @@ describe("image", () => {
         );
     });
 
-    it("renders literal undefined for alt and figcaption when caption is missing", () => {
+    it("renders empty alt and omits figcaption when caption is missing (fixed in 3.1.0 — was literal undefined)", () => {
         const noCaption = { url: "https://example.com/a.png" };
         expect(p.parseBlock({ type: "image", data: noCaption })).toBe(
-            '<figure class="fig-img"><img class="img   " src="https://example.com/a.png" alt="undefined"><figcaption class="fig-cap">undefined</figcaption></figure>'
+            '<figure class="fig-img"><img class="img   " src="https://example.com/a.png" alt=""></figure>'
+        );
+    });
+
+    it("renders empty alt in img mode when caption is missing", () => {
+        const imgOnly = new edjsParser({ image: { use: "img" } });
+        expect(imgOnly.parseBlock({ type: "image", data: { url: "https://example.com/a.png" } })).toBe(
+            '<img class="   img" src="https://example.com/a.png" alt="">'
         );
     });
 });
@@ -193,6 +212,11 @@ describe("delimiter", () => {
     it("renders a br, ignoring data", () => {
         expect(p.parseBlock({ type: "delimiter", data: {} })).toBe("<br />");
         expect(p.parseBlock({ type: "delimiter" })).toBe("<br />");
+    });
+
+    it("renders an hr when configured (3.1.0)", () => {
+        const hrParser = new edjsParser({ delimiter: { tag: "hr" } });
+        expect(hrParser.parseBlock({ type: "delimiter", data: {} })).toBe("<hr />");
     });
 });
 

@@ -53,7 +53,24 @@ export default class edjsParser {
             );
         }
         try {
-            return this.parsers[block.type](block.data, this.config);
+            let markup = this.parsers[block.type](block.data, this.config);
+            const tunes = block.tunes || {};
+            // official block tunes, applied generically to any block type:
+            if (Array.isArray(tunes.footnotes) && tunes.footnotes.length) {
+                // @editorjs/footnotes-tune — texts align with the
+                // <sup data-tune="footnotes">N</sup> elements in the text;
+                // the tune defines no output markup, so this list is ours
+                const items = tunes.footnotes
+                    .map((t: string) => `<li class="cdx-footnotes__item">${t}</li>`)
+                    .join("");
+                markup = `${markup}<ol class="cdx-footnotes">${items}</ol>`;
+            }
+            if (typeof tunes.textVariant === "string" && tunes.textVariant) {
+                // @editorjs/text-variant-tune — the editor wraps the block
+                // (footnotes included) in div.cdx-text-variant.--<variant>
+                markup = `<div class="cdx-text-variant cdx-text-variant--${tunes.textVariant}">${markup}</div>`;
+            }
+            return markup;
         } catch (err) {
             return err as Error;
         }

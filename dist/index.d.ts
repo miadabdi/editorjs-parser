@@ -22,6 +22,9 @@ interface ParserConfig {
     quote: {
         applyAlignment: boolean;
     };
+    delimiter: {
+        tag: "br" | "hr";
+    };
     embedMarkups: Record<string, string>;
 }
 type ParserFunction = (data: any, config: ParserConfig) => string;

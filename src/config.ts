@@ -23,6 +23,10 @@ const defaultConfig: Omit<ParserConfig, "embedMarkups"> = {
         applyAlignment: false,
         // if set to true blockquote element will have text-align css property set
     },
+    delimiter: {
+        tag: "br",
+        // use "hr" for a semantic horizontal rule instead of the historical <br />
+    },
 };
 
 export default defaultConfig;

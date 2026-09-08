@@ -4,6 +4,26 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] — 2026-09-08
+
+### Added
+- **Block tunes support**: the official `textVariant` tune
+  (`@editorjs/text-variant-tune`) wraps block HTML in the editor's own
+  `cdx-text-variant--<citation|call-out|details>` markup, and the official
+  `footnotes` tune (`@editorjs/footnotes-tune`) appends the footnote texts as
+  a `cdx-footnotes` list. Applied generically to any block type.
+- `delimiter.tag` config: `"hr"` renders a semantic `<hr />` instead of the
+  historical default `<br />`.
+- GitHub Actions CI (typecheck, tests, build on every push/PR).
+- `engines: { node: ">=18" }` and a `./package.json` exports entry.
+
+### Fixed
+- Images without a caption now render `alt=""` and omit the `<figcaption>`
+  instead of emitting literal `undefined` (only affected previously-broken
+  output).
+- Header levels are clamped to `h1`–`h6`; a malformed `level` can no longer
+  inject markup into the tag name.
+
 ## [3.0.0] — 2026-09-08
 
 ### Changed (breaking)
@@ -161,6 +181,7 @@ Fixes.
 
 Early feature release.
 
+[3.1.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v3.1.0
 [3.0.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v3.0.0
 [2.0.1]: https://github.com/miadabdi/editorjs-parser/releases/tag/v2.0.1
 [2.0.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v2.0.0

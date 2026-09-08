@@ -82,7 +82,8 @@ var parsers = {
     return `<p class="${config.paragraph.pClass}">${data.text}</p>`;
   },
   header: function(data) {
-    return `<h${data.level}>${data.text}</h${data.level}>`;
+    const level = Math.min(6, Math.max(1, parseInt(String(data.level), 10) || 1));
+    return `<h${level}>${data.text}</h${level}>`;
   },
   list: function(data) {
     const items = data.items || [];
@@ -133,11 +134,12 @@ var parsers = {
       );
     }
     if (config.image.use === "img") {
-      return `<img class="${imageConditions} ${imgClass}" src="${imageSrc}" alt="${data.caption}">`;
+      return `<img class="${imageConditions} ${imgClass}" src="${imageSrc}" alt="${data.caption || ""}">`;
     } else if (config.image.use === "figure") {
       const figureClass = config.image.figureClass || "";
       const figCapClass = config.image.figCapClass || "";
-      return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${data.caption}"><figcaption class="${figCapClass}">${data.caption}</figcaption></figure>`;
+      const figcaption = data.caption ? `<figcaption class="${figCapClass}">${data.caption}</figcaption>` : "";
+      return `<figure class="${figureClass}"><img class="${imgClass} ${imageConditions}" src="${imageSrc}" alt="${data.caption || ""}">${figcaption}</figure>`;
     }
     return void 0;
   },
@@ -148,8 +150,8 @@ var parsers = {
   raw: function(data) {
     return data.html;
   },
-  delimiter: function() {
-    return "<br />";
+  delimiter: function(data, config) {
+    return `<${config.delimiter.tag} />`;
   },
   warning: function(data) {
     return `<div class="cdx-warning"><div class="cdx-warning__title">${data.title}</div><div class="cdx-warning__message">${data.message}</div></div>`;
@@ -235,6 +237,10 @@ var defaultConfig = {
   quote: {
     applyAlignment: false
     // if set to true blockquote element will have text-align css property set
+  },
+  delimiter: {
+    tag: "br"
+    // use "hr" for a semantic horizontal rule instead of the historical <br />
   }
 };
 var config_default = defaultConfig;
@@ -271,7 +277,16 @@ var edjsParser = class {
       );
     }
     try {
-      return this.parsers[block.type](block.data, this.config);
+      let markup = this.parsers[block.type](block.data, this.config);
+      const tunes = block.tunes || {};
+      if (Array.isArray(tunes.footnotes) && tunes.footnotes.length) {
+        const items = tunes.footnotes.map((t) => `<li class="cdx-footnotes__item">${t}</li>`).join("");
+        markup = `${markup}<ol class="cdx-footnotes">${items}</ol>`;
+      }
+      if (typeof tunes.textVariant === "string" && tunes.textVariant) {
+        markup = `<div class="cdx-text-variant cdx-text-variant--${tunes.textVariant}">${markup}</div>`;
+      }
+      return markup;
     } catch (err) {
       return err;
     }
