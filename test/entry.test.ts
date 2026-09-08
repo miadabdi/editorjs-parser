@@ -13,6 +13,6 @@ describe("entry module", () => {
 
     it("exports the public types (compile-time check)", () => {
         const doc: EditorJSOutput = { blocks: [{ type: "paragraph", data: { text: "x" } }] };
-        expect(new edjsParser().parse(doc)).toBe('<p class="paragraph"> x </p>');
+        expect(new edjsParser().parse(doc)).toBe('<p class="paragraph">x</p>');
     });
 });

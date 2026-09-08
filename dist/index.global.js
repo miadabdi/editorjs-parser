@@ -79,7 +79,7 @@ var edjsParser = (() => {
   }
   var parsers = {
     paragraph: function(data, config) {
-      return `<p class="${config.paragraph.pClass}"> ${data.text} </p>`;
+      return `<p class="${config.paragraph.pClass}">${data.text}</p>`;
     },
     header: function(data) {
       return `<h${data.level}>${data.text}</h${data.level}>`;

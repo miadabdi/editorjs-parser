@@ -17,7 +17,7 @@ describe("instance isolation (constructor must not mutate module defaults)", () 
 
         const fresh = new edjsParser();
         expect(fresh.parseBlock({ type: "paragraph", data: { text: "x" } })).toBe(
-            '<p class="paragraph"> x </p>'
+            '<p class="paragraph">x</p>'
         );
     });
 

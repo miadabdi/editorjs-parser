@@ -47,7 +47,6 @@ parser.parseBlock({ type, data }); // → HTML string, or Error if unsupported
 
 ## Quirks that are features (do not "fix" silently)
 
-- `paragraph` output has literal spaces inside the `<p>` tags.
 - `delimiter` renders `<br />`.
 - Missing image caption renders `alt="undefined"` and a literal `undefined` figcaption.
 - Stray double/trailing spaces inside image `class` attributes and embed markup (template collapse of `<%data.length%>`).

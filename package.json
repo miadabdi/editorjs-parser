@@ -1,6 +1,6 @@
 {
   "name": "editorjs-parser",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "This package parses output blocks of editorjs to html",
   "type": "module",
   "main": "./dist/index.cjs",

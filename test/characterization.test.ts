@@ -13,17 +13,17 @@ import edjsParser from "../src/Parser";
 const p = new edjsParser();
 
 describe("paragraph", () => {
-    it("wraps text with literal inner spaces", () => {
+    it("wraps text without padding spaces (adopted from PR #8 in 3.0.0)", () => {
         expect(
             p.parseBlock({ type: "paragraph", data: { text: "Hello <b>world</b>" } })
-        ).toBe('<p class="paragraph"> Hello <b>world</b> </p>');
+        ).toBe('<p class="paragraph">Hello <b>world</b></p>');
     });
 
     it("uses configured pClass", () => {
         const custom = new edjsParser({ paragraph: { pClass: "lead" } });
         expect(
             custom.parseBlock({ type: "paragraph", data: { text: "Hi" } })
-        ).toBe('<p class="lead"> Hi </p>');
+        ).toBe('<p class="lead">Hi</p>');
     });
 });
 
@@ -251,7 +251,7 @@ describe("parse() mechanics", () => {
                     { type: "fakeTool", data: {} },
                 ],
             })
-        ).toBe('<br /><p class="paragraph"> a </p>');
+        ).toBe('<br /><p class="paragraph">a</p>');
     });
 
     it("returns an Error from parseBlock for unknown types", () => {

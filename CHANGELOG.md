@@ -4,6 +4,23 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] — 2026-09-08
+
+### Changed (breaking)
+- Paragraph output no longer pads the text with literal spaces:
+  `<p class="paragraph">text</p>` instead of `<p class="paragraph"> text </p>`.
+  Round-tripping parsed HTML back into the editor no longer grows paragraphs
+  on each pass. Credit: @Eirmas
+  ([#8](https://github.com/miadabdi/editorjs-parser/pull/8)).
+
+  Need the old spacing back? One-line custom parser:
+
+  ```js
+  new edjsParser(undefined, {
+      paragraph: (data, config) => `<p class="${config.paragraph.pClass}"> ${data.text} </p>`,
+  });
+  ```
+
 ## [2.0.1] — 2026-09-08
 
 ### Fixed
@@ -144,6 +161,7 @@ Fixes.
 
 Early feature release.
 
+[3.0.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v3.0.0
 [2.0.1]: https://github.com/miadabdi/editorjs-parser/releases/tag/v2.0.1
 [2.0.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v2.0.0
 [1.8.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.8.0

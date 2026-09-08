@@ -39,7 +39,9 @@ function renderNestedChecklist(items: ListItemV2[]): string {
 
 const parsers: Record<string, ParserFunction> = {
     paragraph: function (data: { text: string }, config: ParserConfig) {
-        return `<p class="${config.paragraph.pClass}"> ${data.text} </p>`;
+        // no padding spaces since 3.0.0 (PR #8) — round-tripping parsed
+        // output back into the editor used to grow paragraphs each pass
+        return `<p class="${config.paragraph.pClass}">${data.text}</p>`;
     },
 
     header: function (data: { text: string; level: number }) {
