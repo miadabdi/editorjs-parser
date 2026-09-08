@@ -250,6 +250,11 @@ var edjsParser = class {
     this.parsers = Object.assign({}, parsers_default, customs);
   }
   parse(EditorJsObject) {
+    if (!EditorJsObject || !Array.isArray(EditorJsObject.blocks)) {
+      throw new Error(
+        'editorjs-parser: input has no "blocks" array \u2014 pass the complete editor.js output ({ time, blocks, version })'
+      );
+    }
     const html = EditorJsObject.blocks.map((block) => {
       const markup = this.parseBlock(block);
       if (markup instanceof Error) {

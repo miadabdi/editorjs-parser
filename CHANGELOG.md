@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] — 2026-09-08
+
+### Fixed
+- `parse()` now throws a clear, actionable error when the input has no
+  `blocks` array (e.g. an API-wrapped or destructured object was passed
+  instead of the full editor.js output), instead of crashing with the cryptic
+  `TypeError: Cannot read properties of undefined (reading 'map')`
+  ([#10](https://github.com/miadabdi/editorjs-parser/issues/10)).
+
 ## [2.0.0] — 2026-09-08
 
 ### Changed
@@ -135,6 +144,7 @@ Fixes.
 
 Early feature release.
 
+[2.0.1]: https://github.com/miadabdi/editorjs-parser/releases/tag/v2.0.1
 [2.0.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v2.0.0
 [1.8.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.8.0
 [1.7.0]: https://github.com/miadabdi/editorjs-parser/releases/tag/v1.7.0

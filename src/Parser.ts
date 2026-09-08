@@ -29,6 +29,13 @@ export default class edjsParser {
     }
 
     parse(EditorJsObject: EditorJSOutput): string {
+        if (!EditorJsObject || !Array.isArray(EditorJsObject.blocks)) {
+            // fixes #10: callers passing anything but the full editor.js
+            // output used to hit a cryptic "reading 'map'" TypeError here
+            throw new Error(
+                'editorjs-parser: input has no "blocks" array — pass the complete editor.js output ({ time, blocks, version })'
+            );
+        }
         const html = EditorJsObject.blocks.map((block) => {
             const markup = this.parseBlock(block);
             if (markup instanceof Error) {
