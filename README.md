@@ -82,7 +82,7 @@ const markup = parser.parseBlock(block);
 - Attaches
 - Personality
 
-**NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor insatnce, but this parser supports both of them and you can use any of them that fulfills your needs.
+**NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor instance, but this parser supports both of them and you can use any of them that fulfills your needs.
 
 ## Markup of new blocks (1.6.0)
 
