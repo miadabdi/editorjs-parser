@@ -25,6 +25,21 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   text `null` — they render as empty `<td></td>` / `<th></th>`. Previously
   broken output only. Fix found in @Akeroh's fork.
 
+## [3.2.1] — 2026-09-10
+
+### Changed
+- Package metadata: clearer npm description ("Convert editor.js saved output
+  into clean HTML — zero runtime dependencies") and `sideEffects: false` so
+  bundlers can tree-shake the package.
+- Internal: `mergeDeep` and `sanitizeHtml` simplified with identical behavior
+  (pinned by the characterization suite).
+
+### CI
+- `npm run smoke` now asserts against the built bundle (footer unwrap,
+  custom embeds, 3.2.0 features) and runs in CI after the build.
+- CI fails with `git diff --exit-code dist/` when `src/` changed without
+  rebuilding the committed `dist/`.
+
 ## [3.1.0] — 2026-09-08
 
 ### Added

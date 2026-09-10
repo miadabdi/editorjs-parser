@@ -33,25 +33,20 @@ var mergeDeep = function(target, source) {
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach((key) => {
       if (isObject(source[key])) {
-        if (!(key in target))
-          Object.assign(output, {
-            [key]: source[key]
-          });
+        if (!(key in target)) output[key] = source[key];
         else output[key] = mergeDeep(target[key], source[key]);
       } else {
-        Object.assign(output, {
-          [key]: source[key]
-        });
+        output[key] = source[key];
       }
     });
   }
   return output;
 };
 var sanitizeHtml = function(markup) {
-  markup = markup.replace(/&/g, "&amp;");
-  markup = markup.replace(/</g, "&lt;");
-  markup = markup.replace(/>/g, "&gt;");
-  return markup;
+  return markup.replace(
+    /[&<>]/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]
+  );
 };
 var embedMarkups = {
   youtube: `<div class="embed"><iframe class="embed-youtube" frameborder="0" src="<%data.embed%>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen <%data.length%>></iframe></div>`,

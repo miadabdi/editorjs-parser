@@ -117,8 +117,6 @@ horizontal rule instead:
 const parser = new edjsParser({ delimiter: { tag: "hr" } });
 ```
 
-**NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor instance, but this parser supports both of them and you can use any of them that fulfills your needs.
-
 ## Markup of new blocks (1.6.0)
 
 Blocks added in 1.6.0 render with the official editor.js tools' own CSS class
@@ -216,6 +214,8 @@ const config = {
 
 const parser = new edjsParser(config);
 ```
+
+**NOTE:** It is pointless to use both `image` and `simple-image` block types in the same editor instance, but this parser supports both of them and you can use any of them that fulfills your needs.
 
 **NOTE:** Images will have class `img`.
 

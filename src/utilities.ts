@@ -10,15 +10,10 @@ export const mergeDeep = function (
     if (isObject(target) && isObject(source)) {
         Object.keys(source).forEach((key) => {
             if (isObject(source[key])) {
-                if (!(key in target))
-                    Object.assign(output, {
-                        [key]: source[key],
-                    });
+                if (!(key in target)) output[key] = source[key];
                 else output[key] = mergeDeep(target[key], source[key]);
             } else {
-                Object.assign(output, {
-                    [key]: source[key],
-                });
+                output[key] = source[key];
             }
         });
     }
@@ -26,10 +21,10 @@ export const mergeDeep = function (
 };
 
 export const sanitizeHtml = function (markup: string): string {
-    markup = markup.replace(/&/g, "&amp;");
-    markup = markup.replace(/</g, "&lt;");
-    markup = markup.replace(/>/g, "&gt;");
-    return markup;
+    // single pass, so the inserted entities are never re-escaped
+    return markup.replace(/[&<>]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" } as Record<string, string>)[c]
+    );
 };
 
 export const embedMarkups: Record<string, string> = {
