@@ -1,7 +1,8 @@
 /**
  * New block parsers added in 1.6.0 — warning, checklist, linkTool, attaches,
  * personality. Markup follows the official editor.js tools' own classes
- * (cdx-* BEM; the Link tool uses link-tool-*).
+ * (cdx-* BEM; the Link tool uses link-tool-*). Alert added in 3.2.0, markup
+ * mirrors editorjs-alert's own render() classes.
  *
  * Written BEFORE the parsers exist: every test must fail with "not supported"
  * against 1.5.4, then pass once src/parsers.js gains the five entries.
@@ -137,6 +138,37 @@ describe("personality", () => {
                 '<div class="cdx-personality__description">Invented the compiler.</div>' +
                 "</div>"
         );
+    });
+});
+
+describe("alert (3.2.0)", () => {
+    it("renders type and align classes around the message", () => {
+        expect(
+            p.parseBlock({
+                type: "alert",
+                data: { type: "success", align: "center", message: "Saved!" },
+            })
+        ).toBe(
+            '<div class="cdx-alert cdx-alert-success cdx-alert-align-center"><div class="cdx-alert__message">Saved!</div></div>'
+        );
+    });
+
+    it("omits the align class when align is absent (pre-1.1 saves)", () => {
+        expect(
+            p.parseBlock({
+                type: "alert",
+                data: { type: "primary", message: "Note" },
+            })
+        ).toBe('<div class="cdx-alert cdx-alert-primary"><div class="cdx-alert__message">Note</div></div>');
+    });
+
+    it("passes inline markup through unescaped, like every non-code parser", () => {
+        expect(
+            p.parseBlock({
+                type: "alert",
+                data: { type: "info", message: "See <a href=\"/x\">docs</a>" },
+            })
+        ).toContain("See <a href=\"/x\">docs</a>");
     });
 });
 

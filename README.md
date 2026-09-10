@@ -81,7 +81,8 @@ const markup = parser.parseBlock(block);
 - Link tool
 - Attaches
 - Personality
-- Block tunes: **text variant** (`citation` / `call-out` / `details`) and **footnotes**
+- Alert
+- Block tunes: **text variant** (`citation` / `call-out` / `details`), **footnotes**, and **alignment**
 
 ## Block tunes (3.1.0)
 
@@ -96,6 +97,16 @@ official tunes are rendered:
   (matching the `<sup data-tune="footnotes">N</sup>` markers in the text) are
   appended as a list after the block:
   `<ol class="cdx-footnotes"><li class="cdx-footnotes__item">…</li></ol>`
+
+## Alignment tune (3.2.0)
+
+Third-party alignment tunes (e.g.
+[editor-js-alignment-tune](https://github.com/Diesnei/editor-js-alignment-tune))
+save `{ alignment: "left|center|right" }` under a tune key you choose in your
+editor config (commonly `anyTuneName`), so the parser detects any tune value
+shaped `{ alignment: … }` and wraps the block in
+`<div style="text-align: …">…</div>` — the tune defines no output markup of
+its own, so this wrapper is our documented convention (like `cdx-footnotes`).
 
 ## Delimiter (3.1.0)
 
@@ -118,6 +129,7 @@ names, so existing editor.js styles apply to parsed output too:
 - **Link tool** — `<a class="link-tool__content link-tool__content--rendered" href="…" target="_blank" rel="nofollow noindex noreferrer">` with optional `link-tool__image` (background image), `link-tool__title`, `link-tool__description` and a `link-tool__anchor` span holding the hostname
 - **Attaches** — `<div class="cdx-attaches cdx-attaches--with-file">` with a `cdx-attaches__download-button` link, `cdx-attaches__file-icon(-background/-label)`, `cdx-attaches__title` and a human-readable `cdx-attaches__size` (KiB/MiB)
 - **Personality** — `<div class="cdx-personality">` with `cdx-personality__photo` (background image), `cdx-personality__name` (linked) and `cdx-personality__description`
+- **Alert** (3.2.0, [editorjs-alert](https://github.com/vishaltelangre/editorjs-alert)) — `<div class="cdx-alert cdx-alert-{type}[ cdx-alert-align-{align}]">` with a `cdx-alert__message` div; the align class is omitted when the saved data has no `align` (tool versions before 1.1)
 
 ## Custom or overriding parser methods
 
@@ -305,6 +317,9 @@ server-side sanitizer.
   ```
 - **3.0 → 3.1**: no breaking changes — block tunes, the `delimiter.tag`
   config, and fixes for `alt="undefined"` and header-level clamping.
+- **3.1 → 3.2**: no breaking changes — `alert` block, third-party alignment
+  tune, and null table cells no longer render as literal `null` text
+  (previously-broken output only).
 
 Full history: [CHANGELOG.md](CHANGELOG.md).
 

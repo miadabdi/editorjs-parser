@@ -111,7 +111,10 @@ var edjsParser = (() => {
       return `<blockquote ${alignment}><p>${data.text}</p><cite>${data.caption}</cite></blockquote>`;
     },
     table: function(data) {
-      const rowToTr = (row, tag) => `<tr>${row.reduce((acc, cell) => acc + `<${tag}>${cell}</${tag}>`, "")}</tr>`;
+      const rowToTr = (row, tag) => (
+        // editor.js saves empty cells as null — render them as empty, not "null"
+        `<tr>${row.reduce((acc, cell) => acc + `<${tag}>${cell != null ? cell : ""}</${tag}>`, "")}</tr>`
+      );
       if (data.withHeadings && data.content.length) {
         const [head, ...body] = data.content;
         return `<table><thead>${rowToTr(head, "th")}</thead><tbody>${body.map((row) => rowToTr(row, "td")).join("")}</tbody></table>`;
@@ -188,6 +191,12 @@ var edjsParser = (() => {
     },
     personality: function(data) {
       return `<div class="cdx-personality"><div class="cdx-personality__photo" style="background-image: url('${data.photo}');"></div><a class="cdx-personality__name" href="${data.link}">${data.name}</a><div class="cdx-personality__description">${data.description}</div></div>`;
+    },
+    // editorjs-alert — classes mirror the tool's own render() output;
+    // align only exists since the tool's v1.1, so it is optional
+    alert: function(data) {
+      const align = data.align ? ` cdx-alert-align-${data.align}` : "";
+      return `<div class="cdx-alert cdx-alert-${data.type}${align}"><div class="cdx-alert__message">${data.message}</div></div>`;
     },
     embed: function(data, config) {
       data = { ...data };
@@ -285,6 +294,12 @@ var edjsParser = (() => {
         }
         if (typeof tunes.textVariant === "string" && tunes.textVariant) {
           markup = `<div class="cdx-text-variant cdx-text-variant--${tunes.textVariant}">${markup}</div>`;
+        }
+        const alignmentTune = Object.values(tunes).find(
+          (t) => typeof t === "object" && t !== null && typeof t.alignment === "string" && t.alignment !== ""
+        );
+        if (alignmentTune) {
+          markup = `<div style="text-align: ${alignmentTune.alignment};">${markup}</div>`;
         }
         return markup;
       } catch (err) {

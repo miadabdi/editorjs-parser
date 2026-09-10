@@ -4,6 +4,27 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] — 2026-09-10
+
+### Added
+- **`alert` block** ([editorjs-alert](https://github.com/vishaltelangre/editorjs-alert)):
+  renders the tool's own markup
+  `<div class="cdx-alert cdx-alert-{type}[ cdx-alert-align-{align}]">` with a
+  `cdx-alert__message` div. The align class is omitted for saves without
+  `align` (tool versions before 1.1). Feature found in @Akeroh's fork.
+- **Alignment block tune** (third-party tunes such as
+  [editor-js-alignment-tune](https://github.com/Diesnei/editor-js-alignment-tune)):
+  any tune value shaped `{ alignment: "left|center|right" }` is detected —
+  the tune key is chosen by the editor config, commonly `anyTuneName` — and
+  the block markup is wrapped in `<div style="text-align: …">`. Composes
+  with `textVariant` and `footnotes` (alignment wrapper outermost). Feature
+  found in @CleFerMy's and @TristanGodal's forks.
+
+### Fixed
+- Table cells saved as `null` by editor.js no longer render as the literal
+  text `null` — they render as empty `<td></td>` / `<th></th>`. Previously
+  broken output only. Fix found in @Akeroh's fork.
+
 ## [3.1.0] — 2026-09-08
 
 ### Added

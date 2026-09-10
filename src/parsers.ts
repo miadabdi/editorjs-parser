@@ -87,9 +87,13 @@ const parsers: Record<string, ParserFunction> = {
         return `<blockquote ${alignment}><p>${data.text}</p><cite>${data.caption}</cite></blockquote>`;
     },
 
-    table: function (data: { content: string[][]; withHeadings?: boolean }) {
-        const rowToTr = (row: string[], tag: "td" | "th") =>
-            `<tr>${row.reduce((acc, cell) => acc + `<${tag}>${cell}</${tag}>`, "")}</tr>`;
+    table: function (data: {
+        content: (string | null)[][];
+        withHeadings?: boolean;
+    }) {
+        const rowToTr = (row: (string | null)[], tag: "td" | "th") =>
+            // editor.js saves empty cells as null — render them as empty, not "null"
+            `<tr>${row.reduce((acc, cell) => acc + `<${tag}>${cell ?? ""}</${tag}>`, "")}</tr>`;
         if (data.withHeadings && data.content.length) {
             const [head, ...body] = data.content;
             return `<table><thead>${rowToTr(head, "th")}</thead><tbody>${body
@@ -224,6 +228,13 @@ const parsers: Record<string, ParserFunction> = {
         photo: string;
     }) {
         return `<div class="cdx-personality"><div class="cdx-personality__photo" style="background-image: url('${data.photo}');"></div><a class="cdx-personality__name" href="${data.link}">${data.name}</a><div class="cdx-personality__description">${data.description}</div></div>`;
+    },
+
+    // editorjs-alert — classes mirror the tool's own render() output;
+    // align only exists since the tool's v1.1, so it is optional
+    alert: function (data: { type: string; align?: string; message: string }) {
+        const align = data.align ? ` cdx-alert-align-${data.align}` : "";
+        return `<div class="cdx-alert cdx-alert-${data.type}${align}"><div class="cdx-alert__message">${data.message}</div></div>`;
     },
 
     embed: function (

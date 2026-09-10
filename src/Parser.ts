@@ -70,6 +70,20 @@ export default class edjsParser {
                 // (footnotes included) in div.cdx-text-variant.--<variant>
                 markup = `<div class="cdx-text-variant cdx-text-variant--${tunes.textVariant}">${markup}</div>`;
             }
+            const alignmentTune = Object.values(tunes).find(
+                (t): t is { alignment: string } =>
+                    typeof t === "object" &&
+                    t !== null &&
+                    typeof (t as Record<string, unknown>).alignment === "string" &&
+                    (t as Record<string, unknown>).alignment !== ""
+            );
+            if (alignmentTune) {
+                // third-party alignment tunes (e.g. editor-js-alignment-tune) —
+                // the tune key is chosen by the editor config, so any tune value
+                // shaped { alignment } is detected; the tune defines no output
+                // markup, so this wrapper is ours
+                markup = `<div style="text-align: ${alignmentTune.alignment};">${markup}</div>`;
+            }
             return markup;
         } catch (err) {
             return err as Error;

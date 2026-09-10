@@ -1,6 +1,8 @@
 /**
  * Table rendering — withHeadings support added in 1.8.0, plus regression
  * guards that tables without headings stay byte-identical to pre-1.8.0.
+ * Null-cell handling added in 3.2.0: editor.js saves empty cells as null,
+ * which used to render as the literal text "null".
  *
  * Written BEFORE the implementation: the withHeadings cases must fail against
  * 1.7.0 (headings render as plain td), the no-headings cases must pass.
@@ -74,5 +76,33 @@ describe("tables with headings (1.8.0)", () => {
         expect(p.parseBlock({ type: "table", data: { withHeadings: true, content: [] } })).toBe(
             "<table><tbody></tbody></table>"
         );
+    });
+});
+
+describe("null cells (3.2.0)", () => {
+    it("renders null cells as empty td, not the literal text null", () => {
+        expect(
+            p.parseBlock({
+                type: "table",
+                data: {
+                    content: [
+                        ["A", null],
+                        [null, "B"],
+                    ] as (string | null)[][],
+                },
+            })
+        ).toBe("<table><tbody><tr><td>A</td><td></td></tr><tr><td></td><td>B</td></tr></tbody></table>");
+    });
+
+    it("renders null heading cells as empty th", () => {
+        expect(
+            p.parseBlock({
+                type: "table",
+                data: {
+                    withHeadings: true,
+                    content: [[null, "Name"]] as (string | null)[][],
+                },
+            })
+        ).toBe("<table><thead><tr><th></th><th>Name</th></tr></thead><tbody></tbody></table>");
     });
 });
