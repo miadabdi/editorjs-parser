@@ -57,12 +57,22 @@ var embedMarkups = {
 };
 
 // src/parsers.ts
-function renderNestedList(items, tag) {
+function renderNestedList(items, tag, meta) {
+  var _a;
+  let attributes = "";
+  if (tag === "ol" && meta) {
+    if (Number.isSafeInteger(meta.start) && meta.start !== 1) {
+      attributes += ` start="${meta.start}"`;
+    }
+    if (["lower-roman", "upper-roman", "lower-alpha", "upper-alpha"].includes((_a = meta.counterType) != null ? _a : "")) {
+      attributes += ` style="list-style-type: ${meta.counterType};"`;
+    }
+  }
   const lis = items.map((item) => {
-    const children = item.items && item.items.length ? renderNestedList(item.items, tag) : "";
+    const children = item.items && item.items.length ? renderNestedList(item.items, tag, { counterType: meta == null ? void 0 : meta.counterType }) : "";
     return `<li>${item.content}${children}</li>`;
   }).join("");
-  return `<${tag}>${lis}</${tag}>`;
+  return `<${tag}${attributes}>${lis}</${tag}>`;
 }
 function renderNestedChecklist(items) {
   const divs = items.map((item) => {
@@ -82,6 +92,9 @@ var parsers = {
   },
   list: function(data) {
     const items = data.items || [];
+    if (items.length === 0 && data.style === "ordered") {
+      return renderNestedList([], "ol", data.meta);
+    }
     if (typeof items[0] === "string" || items.length === 0) {
       const type = data.style === "ordered" ? "ol" : "ul";
       const legacyItems = items.reduce(
@@ -95,7 +108,8 @@ var parsers = {
     }
     return renderNestedList(
       items,
-      data.style === "ordered" ? "ol" : "ul"
+      data.style === "ordered" ? "ol" : "ul",
+      data.meta
     );
   },
   quote: function(data, config) {
