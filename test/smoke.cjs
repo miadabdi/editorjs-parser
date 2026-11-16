@@ -33,4 +33,14 @@ assert.equal(
     "alignment tune ships"
 );
 
+assert.equal(
+    parser.parseBlock({ type: "list", data: {
+        style: "ordered",
+        meta: { start: 3, counterType: "lower-roman" },
+        items: [{ content: "third", meta: {}, items: [] }, { content: "fourth", meta: {}, items: [] }],
+    } }),
+    '<ol start="3" style="list-style-type: lower-roman;"><li>third</li><li>fourth</li></ol>',
+    "ordered list block metadata ships"
+);
+
 console.log("smoke: all bundle assertions passed\n\nHTML:\n" + html);

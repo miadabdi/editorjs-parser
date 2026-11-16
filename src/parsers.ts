@@ -1,23 +1,37 @@
 import { sanitizeHtml } from "./utilities";
 import type { ParserConfig, ParserFunction } from "./types";
 
+interface OrderedListMeta {
+    start?: number;
+    counterType?: string;
+}
+
 interface ListItemV2 {
     content: string;
     meta?: { checked?: boolean; start?: number; counterType?: string };
     items?: ListItemV2[];
 }
 
-function renderNestedList(items: ListItemV2[], tag: "ol" | "ul"): string {
+function renderNestedList(items: ListItemV2[], tag: "ol" | "ul", meta?: OrderedListMeta): string {
+    let attributes = "";
+    if (tag === "ol" && meta) {
+        if (Number.isSafeInteger(meta.start) && meta.start !== 1) {
+            attributes += ` start="${meta.start}"`;
+        }
+        if (["lower-roman", "upper-roman", "lower-alpha", "upper-alpha"].includes(meta.counterType ?? "")) {
+            attributes += ` style="list-style-type: ${meta.counterType};"`;
+        }
+    }
     const lis = items
         .map((item) => {
             const children =
                 item.items && item.items.length
-                    ? renderNestedList(item.items, tag)
+                    ? renderNestedList(item.items, tag, { counterType: meta?.counterType })
                     : "";
             return `<li>${item.content}${children}</li>`;
         })
         .join("");
-    return `<${tag}>${lis}</${tag}>`;
+    return `<${tag}${attributes}>${lis}</${tag}>`;
 }
 
 function renderNestedChecklist(items: ListItemV2[]): string {
@@ -52,9 +66,13 @@ const parsers: Record<string, ParserFunction> = {
 
     list: function (data: {
         style?: string;
+        meta?: OrderedListMeta;
         items?: (string | ListItemV2)[];
     }) {
         const items = data.items || [];
+        if (items.length === 0 && data.style === "ordered") {
+            return renderNestedList([], "ol", data.meta);
+        }
 
         // legacy format ({style, items: string[]}) — output must stay byte-identical
         if (typeof items[0] === "string" || items.length === 0) {
@@ -72,7 +90,8 @@ const parsers: Record<string, ParserFunction> = {
         }
         return renderNestedList(
             items as ListItemV2[],
-            data.style === "ordered" ? "ol" : "ul"
+            data.style === "ordered" ? "ol" : "ul",
+            data.meta
         );
     },
 

@@ -84,6 +84,12 @@ const markup = parser.parseBlock(block);
 - Alert
 - Block tunes: **text variant** (`citation` / `call-out` / `details`), **footnotes**, and **alignment**
 
+Ordered v2 lists support block-level `meta.start` (a safe integer, applied only
+at the root) and `meta.counterType` (`lower-roman`, `upper-roman`, `lower-alpha`,
+or `upper-alpha`, applied throughout nesting; `numeric` is the default).
+Nested lists restart at one and use native list markers, not hierarchical
+markers such as `iii.i.`. Ordered item metadata does not control numbering.
+
 ## Block tunes (3.1.0)
 
 editor.js saves block tunes in `block.tunes` alongside `block.data`. Two
