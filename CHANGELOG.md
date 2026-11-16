@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.2] — 2026-11-16
+
+### Fixed
+- **Ordered list v2 metadata** (`@editorjs/list` v2): `data.meta.start` and
+  `data.meta.counterType` were silently dropped (#14). `start` now emits
+  `start="N"` on the root `<ol>` only (safe integers; default `1` omitted;
+  nested lists restart at one), and `counterType` emits
+  `style="list-style-type: …"` on every `<ol>` level for the non-default
+  allowlisted types (`lower-roman`, `upper-roman`, `lower-alpha`,
+  `upper-alpha`); `numeric` and unknown values emit no style. Legacy
+  string-item lists, unordered/checklist output, and default metadata are
+  unchanged. Native markers retained — upstream's hierarchical `iii.i.`
+  counters are out of scope (see README).
+
 ## [3.2.0] — 2026-09-10
 
 ### Added

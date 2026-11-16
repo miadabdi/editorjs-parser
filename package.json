@@ -1,6 +1,6 @@
 {
   "name": "editorjs-parser",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Convert editor.js saved output into clean HTML — zero runtime dependencies",
   "type": "module",
   "sideEffects": false,
